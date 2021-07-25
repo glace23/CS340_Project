@@ -1,0 +1,97 @@
+<h1>Professor Lookup</h1>
+
+<h3>Look for Professor:</h3>
+<p>Search for the fields you would like to, all fields are optional.</p>
+
+<form>
+    <div class="professor-form">
+        <label for="professor fname">Professor First Name: </label>
+        <input type="text" name="professor fname" id="professorfname">
+    </div>
+    <div class="professor-form">
+        <label for="professor name">Professor Last Name: </label>
+        <input type="text" name="professor lname" id="professorlname">
+    </div>
+    <div class="professor-form">
+        <label for="professor email">Professor Email: </label>
+        <input type="email" name="professor email" id="professoremail">
+    </div>
+    <div class="professor-form">
+        <label for="professor number">Professor ID Number: </label>
+        <input type="text" name="professor number" id="professornumber">
+    </div>
+    <div class="professor-form">
+        <button onclick="return checkString();">Search</button>
+    </div>
+</form>
+
+<div>
+<br>
+<p id="searchvalue"></p>
+<br>
+<table>
+    <thead>
+        <tr>
+            <th>Professor First Name</th>
+            <th>Professor Last Name</th>
+            <th>Professor Email</th>
+            <th>Professor ID Number</th>
+        </tr>
+        
+    </thead>
+    <tbody>
+        <tr>
+            <td>Kiera</td>
+            <td>Constant</td>
+            <td>kconstant@osu.edu</td>
+            <td>63079</td>
+        </tr>
+        <tr>
+            <td>Jocelyne</td>
+            <td>Lukas</td>
+            <td>jlukas@osu.edu</td>
+            <td>19047</td>
+        </tr>
+        <tr>
+            <td>Rita</td>
+            <td>Pravin</td>
+            <td>rpravin@osu.edu</td>
+            <td>51729</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
+<script type="text/javascript">
+    function checkString(){
+        let checkfname = document.getElementById("professorfname").value;
+        let checklname = document.getElementById("professorlname").value;
+        let checkemail = document.getElementById("professoremail").value;
+        let checknumber = document.getElementById("professornumber").value;
+        let search = '';
+
+        if (checkfname !== ''){
+            search = search.concat(" First name:");
+            search = search.concat(checkfname);
+        }
+        if (checklname !== ''){
+            search = search.concat(" Last name:");
+            search = search.concat(checklname);
+        }
+        if (checkemail !== ''){
+            search = search.concat(" Email:");
+            search = search.concat(checkemail);
+        }
+        if (checknumber !== ''){
+            search = search.concat(" Number:");
+            search = search.concat(checknumber);
+        }
+        if (search === ''){
+            search = "All fields were left blank";
+            document.getElementById("searchvalue").innerHTML = search;
+            return false;
+        }
+        document.getElementById("searchvalue").innerHTML = search;
+        return false;
+    }
+</script>

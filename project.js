@@ -1,5 +1,5 @@
 var express = require('express');
-
+var path = require('path');
 var app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 var path = require('path')
@@ -15,6 +15,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 
+app.get('/css', function(req,res){
+      var options = { 
+        root: path.join(__dirname + "/public/css") 
+    }; 
+  res.sendFile("style.css", options);
+});
+
 app.get('/',function(req,res){
   res.render('home')
 });
@@ -22,6 +29,24 @@ app.get('/',function(req,res){
 app.get('/lookup',function(req,res){
   res.render('lookup')
 });
+
+app.get('/lookup/student',function(req,res){
+  res.render('studentlookup')
+});
+
+app.get('/lookup/professor',function(req,res){
+  res.render('professorlookup')
+});
+
+app.get('/lookup/course',function(req,res){
+  res.render('courselookup')
+});
+
+app.get('/lookup/room',function(req,res){
+  res.render('roomlookup')
+});
+
+
 
 app.get('/add',function(req,res){
   res.render('add')

@@ -1,0 +1,125 @@
+<h1>Student Lookup</h1>
+
+<h3>Look for Student:</h3>
+<p>Search for the fields you would like to, all fields are optional.</p>
+
+<form>
+    <div class="student-form">
+        <label for="student fname">Student First Name: </label>
+        <input type="text" name="student fname" id="studentfname">
+    </div>
+    <div class="student-form">
+        <label for="student name">Student Last Name: </label>
+        <input type="text" name="student lname" id="studentlname">
+    </div>
+    <div class="student-form">
+        <label for="student email">Student Email: </label>
+        <input type="email" name="student email" id="studentemail">
+    </div>
+    <div class="student-form">
+        <label for="student number">Student ID Number: </label>
+        <input type="text" name="student number" id="studentnumber">
+    </div>
+    <div class="student-form">
+        <label for="student name">Student Phone Number </label>
+        <input type="text" name="student phone number" id="studentphonenumber" maxlength="10">
+    </div>
+    <div class="student-form">
+        <button onclick="return checkString();">Search</button>
+    </div>
+</form>
+
+<div>
+<br>
+<p id="searchvalue"></p>
+<br>
+<table>
+    <thead>
+        <tr>
+            <th>Student First Name</th>
+            <th>Student Last Name</th>
+            <th>Student Email</th>
+            <th>Student ID Number</th>
+            <th>Student Phone Number</th>
+        </tr>
+        
+    </thead>
+    <tbody>
+        <tr>
+            <td>Wulf</td>    
+            <td>Archana</td> 
+            <td>warchana@osu.edu</td>    
+            <td>432238</td>  
+            <td>9122411950</td>  
+        </tr>
+        <tr>
+            <td>Jim</td>
+            <td>Jones</td>
+            <td>jjones@osu.edu</td>
+            <td>363098</td>
+            <td>2823031598</td>
+        </tr>
+        <tr>
+            <td>Eustorgios  
+            <td>Andrei  
+            <td>eandrei@osu.edu 
+            <td>981843  
+            <td>9285860595  
+        </tr>
+        <tr>
+            <td>Shun    
+            <td>Aseneth 
+            <td>saseneth@osu.edu    
+            <td>827089  
+            <td>4089316259 
+        </tr>
+        <tr>
+            <td>Corrie  
+            <td>Sophea  
+            <td>csophea@osu.edu 
+            <td>459109  
+            <td>4938306544  
+        </tr>
+    </tbody>
+</table>
+</div>
+<br>
+
+<script type="text/javascript">
+    function checkString(){
+        let checkfname = document.getElementById("studentfname").value;
+        let checklname = document.getElementById("studentlname").value;
+        let checkemail = document.getElementById("studentemail").value;
+        let checknumber = document.getElementById("studentnumber").value;
+        let checkphonenumber = document.getElementById("studentphonenumber").value;
+        let search = '';
+
+        if (checkfname !== ''){
+            search = search.concat(" First name:");
+            search = search.concat(checkfname);
+        }
+        if (checklname !== ''){
+            search = search.concat(" Last name:");
+            search = search.concat(checklname);
+        }
+        if (checkemail !== ''){
+            search = search.concat(" Email:");
+            search = search.concat(checkemail);
+        }
+        if (checknumber !== ''){
+            search = search.concat(" Number:");
+            search = search.concat(checknumber);
+        }
+        if (checkphonenumber !== ''){
+            search = search.concat(" Phone Number:");
+            search = search.concat(checkphonenumber);
+        }
+        if (search === ''){
+            search = "All fields were left blank";
+            document.getElementById("searchvalue").innerHTML = search;
+            return false;
+        }
+        document.getElementById("searchvalue").innerHTML = search;
+        return false;
+    }
+</script>

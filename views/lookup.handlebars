@@ -1,51 +1,36 @@
 <h1>Student Registration Lookup</h1>
 
-<h3>Look for Student:</h3>
-<form action="">
-    <div class="student-form">
-        <label for="student fname">Student First Name: </label>
-        <input type="text" name="student fname" id="student fname" required>
-    </div>
-    <div class="student-form">
-        <label for="student name">Student Last Name: </label>
-        <input type="text" name="student lname" id="student lname" required>
-    </div>
-    <div class="student-form">
-        <label for="student email">Student Email: </label>
-        <input type="email" name="student email" id="student email" required>
-    </div>
+<h3>Look for Registration:</h3>
+
+<p>Show all courses student is taking.</p>
+<form>
     <div class="student-form">
         <label for="student number">Student ID Number: </label>
-        <input type="text" name="student number" id="student number" required>
+        <input type="text" name="student number" id="studentnumber" required>
     </div>
-    <div class="student-form">
-        <label for="student name">Student Phone Number </label>
-        <input type="text" name="student phone number" id="student phone number" required>
-    </div>
-    <div class="student-form">
-        <input type="button" value="Search Student">
-    </div>
+    <button>Search</button>
 </form>
 
 <br>
-<table>
-    <thead>
-        <tr>
-            <th>Student First Name</th>
-            <th>Student Last Name</th>
-            <th>Student Email</th>
-            <th>Student ID Number</th>
-            <th>Student Phone Number</th>
-        </tr>
-        
-    </thead>
-    <tbody>
-        <tr>
-            <td>John</td>
-            <td>Smith</td>
-            <td>Jsmith001@univ.edu</td>
-            <td>00001</td>
-            <td>(555) 555-5555</td>
-        </tr>
-    </tbody>
-</table>
+<p>Show all courses and students professor is teaching.</p>
+<form>
+    <div class="professor-form">
+        <label for="professor number">Professor ID Number: </label>
+        <input type="text" name="professor number" id="professornumber" required>
+    </div>
+    <button>Search</button>
+</form>
+
+<br>
+<p>Show all students taking course.</p>
+<form>
+    <div class="course-form">
+        <label for="course name">Course Name: </label>
+        <input type="text" name="course name" id="coursename" required>
+    </div>
+    <div class="course-form">
+        <label for="course start">Course Start Date: </label>
+        <input type="text" name="course start" id="coursestart" required>
+    </div>
+    <button>Search</button>
+</form>

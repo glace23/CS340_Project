@@ -3,9 +3,9 @@ CREATE TABLE Students(
     studentID INT(11) AUTO_INCREMENT UNIQUE NOT NULL,
     studentFirstName VARCHAR(255) NOT NULL,
     studentLastName VARCHAR(255) NOT NULL,
-    studentEmail VARCHAR(255) NOT NULL,
+    studentEmail VARCHAR(255) UNIQUE NOT NULL,
     studentNumber VARCHAR(6) UNIQUE NOT NULL,
-    studentPhoneNumber VARCHAR(10) UNIQUE NOT NULL,
+    studentPhoneNumber VARCHAR(10) NOT NULL,
     PRIMARY KEY(studentID)
     );
 
@@ -21,7 +21,7 @@ CREATE TABLE Professors(
     professorID INT(11) AUTO_INCREMENT UNIQUE NOT NULL,
     professorFirstName VARCHAR(255) NOT NULL,
     professorLastName VARCHAR(255) NOT NULL,
-    professorEmail VARCHAR(255) NOT NULL,
+    professorEmail VARCHAR(255) UNIQUE NOT NULL,
     professorNumber VARCHAR(5) UNIQUE NOT NULL,
     PRIMARY KEY(professorID)
     );
@@ -30,8 +30,8 @@ DROP TABLE IF EXISTS Courses;
 CREATE TABLE Courses(
     courseID INT(11) AUTO_INCREMENT UNIQUE NOT NULL,
     courseName VARCHAR(255) NOT NULL,
-    courseStartDate VARCHAR(255) NOT NULL,
-    courseEndDate VARCHAR(255) NOT NULL,
+    courseStartDate DATE NOT NULL,
+    courseEndDate DATE NOT NULL,
     roomID INT(11),
     professorID INT(11),
     PRIMARY KEY(courseID),

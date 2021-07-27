@@ -7,6 +7,7 @@
   <option value="student">Student</option>
   <option value="professor">Professor</option>
   <option value="course">Course</option>
+  <option value="room">Room</option>
 </select>
 <button onclick="showForm()">Add</button>
 
@@ -46,13 +47,22 @@
   <label for="cname">Course name:</label><br>
   <input type="text" id="cname" name="cname" placeholder="CS344"><br>
   <label for="cstart">Start Date:</label><br>
-  <input type="text" id="cstart" name="cstart" placeholder="2021-08-01"><br>
+  <input type="date" id="cstart" name="cstart" placeholder="2021-08-01"><br>
   <label for="cend">End Date:</label><br>
-  <input type="text" id="cend" name="cend" placeholder="2021-09-30"><br>
+  <input type="date" id="cend" name="cend" placeholder="2021-09-30"><br>
   <label for="croom">Room Number:</label><br>
   <input type="text" id="croom" name="croom" placeholder="A302"><br>
   <label for="cnumber">Professor Number:</label><br>
   <input type="text" id="cnumber" name="cnumber" placeholder="P1234567"><br>
+  <input type="submit" value="Add">
+</form>
+<br>
+
+<form id="room" hidden>
+  <br>
+  <h3>Add a Room:</h3>
+  <label for="roomnumber">Room number:</label><br>
+  <input type="text" id="roomnumber" name="roomnumber" placeholder="A302"><br>
   <input type="submit" value="Add">
 </form>
 <br>
@@ -64,16 +74,25 @@ function showForm(){
     document.getElementById("student").hidden = false;
     document.getElementById("professor").hidden = true;
     document.getElementById("course").hidden = true;
+    document.getElementById("room").hidden = true;
   }
   else if (addValue == "professor"){
     document.getElementById("student").hidden = true;
     document.getElementById("professor").hidden = false;
     document.getElementById("course").hidden = true;
+    document.getElementById("room").hidden = true;
   }
   else if (addValue == "course"){
     document.getElementById("student").hidden = true;
     document.getElementById("professor").hidden = true;
     document.getElementById("course").hidden = false;
+    document.getElementById("room").hidden = true;
+  }
+  else if (addValue == "room"){
+    document.getElementById("student").hidden = true;
+    document.getElementById("professor").hidden = true;
+    document.getElementById("course").hidden = true;
+    document.getElementById("room").hidden = false;
   }
   else{
     document.getElementById("student").hidden = true;

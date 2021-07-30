@@ -1,20 +1,38 @@
 <h1>Room Lookup</h1>
 
-<h3>Look for Rooms:</h3>
-<form>
+<button onclick="showRoomLookup()">Look for Room</button><button onclick="showRoomAdd()">Add Room</button>
+
+
+<form id="room-lookup" hidden>
+    <h3>Look for Room:</h3>
     <div class="room-form">
         <label for="room number">Room Number: </label>
-        <input type="text" name="room number" id="roomnumber" required>
+        <input type="text" name="room number" id="roomnumber">
     </div>
     <div class="room-form">
-        <button>Search</button>
+        <label for="course name">Course Name: </label>
+        <input type="text" name="course name" id="coursename">
     </div>
+    <input type="submit" value="Search">
 </form>
 
+<form id="room-add" hidden>
+    <h3>Add a Room:</h3>
+    <div>
+        <label for="roomnumber">Room Number:</label>
+        <input type="text" id="roomnumber" name="roomnumber" placeholder="A302" required>
+    </div>
+    <div>
+        <label for="coursename">Course Name:</label>
+        <input type="text" id="coursename" name="coursename" placeholder="CS340" required>
+    </div>    
+    <input type="submit" value="Add New Room">
+</form>
+
+<div>
 <br>
 <p id="searchvalue"></p>
 <br>
-
 <table>
     <thead>
         <tr>
@@ -47,3 +65,34 @@
     </tbody>
 </table>
 <br>
+
+<script>
+
+    // toggle room look up form
+    function showRoomLookup(){
+        lookup_form = document.getElementById("room-lookup");
+        add_form = document.getElementById("room-add");
+        if (window.getComputedStyle(lookup_form).display == "none"){
+            if (window.getComputedStyle(add_form).display != "none"){
+                add_form.hidden = true;
+            }
+            lookup_form.hidden = false;
+        } else {
+            lookup_form.hidden = true;
+        }
+    }
+
+    // toggle add room form
+    function showRoomAdd(){
+        lookup_form = document.getElementById("room-lookup");
+        add_form = document.getElementById("room-add");
+        if (window.getComputedStyle(add_form).display == "none"){
+            if (window.getComputedStyle(lookup_form).display != "none"){
+                lookup_form.hidden = true;
+            }
+            add_form.hidden = false;
+        } else {
+            add_form.hidden = true;
+        }
+    }
+</script>

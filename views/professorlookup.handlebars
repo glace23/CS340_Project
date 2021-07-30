@@ -1,9 +1,10 @@
 <h1>Professor Lookup</h1>
 
-<h3>Look for Professor:</h3>
-<p>Search for the fields you would like to, all fields are optional.</p>
+<button onclick="showProfessorLookup()">Look for Professor</button><button onclick="showProfessorAdd()">Add Professor</button>
 
-<form>
+<form id="professor-lookup" hidden>  
+    <h3>Look for Professor:</h3>
+    <p>Search for the fields you would like to, all fields are optional.</p>
     <div class="professor-form">
         <label for="professor fname">Professor First Name: </label>
         <input type="text" name="professor fname" id="professorfname">
@@ -23,6 +24,28 @@
     <div class="professor-form">
         <button onclick="return checkString();">Search</button>
     </div>
+</form>
+
+<form id="professor-add" hidden>
+    <h3>Add a Professor:</h3>
+    <p>Add a new professor to the database. All fields are required.</p>
+    <div>
+        <label for="pfname">Professor First Name:</label>
+        <input type="text" id="pfname" name="pfname" placeholder="Jane">
+    </div>
+    <div>
+        <label for="plname">Professor Last Name:</label>
+        <input type="text" id="plname" name="plname" placeholder="Doe">
+    </div>
+    <div>
+        <label for="pemail">Professor Email:</label>
+        <input type="text" id="pemail" name="pemail" placeholder="doejane@osu.edu">
+    </div>
+    <div>
+        <label for="pnumber">Professor ID Number:</label>
+        <input type="text" id="pnumber" name="pnumber" placeholder="P1234567">
+    </div>
+    <input type="submit" value="Add Professor">
 </form>
 
 <div>
@@ -101,4 +124,33 @@
         document.getElementById("searchvalue").innerHTML = search;
         return false;
     }
+
+    // toggle professor look up form
+    function showProfessorLookup(){
+        lookup_form = document.getElementById("professor-lookup");
+        add_form = document.getElementById("professor-add");
+        if (window.getComputedStyle(lookup_form).display == "none"){
+            if (window.getComputedStyle(add_form).display != "none"){
+                add_form.hidden = true;
+            }
+            lookup_form.hidden = false;
+        } else {
+            lookup_form.hidden = true;
+        }
+    }
+
+    // toggle professor add form
+    function showProfessorAdd(){
+        lookup_form = document.getElementById("professor-lookup");
+        add_form = document.getElementById("professor-add");
+        if (window.getComputedStyle(add_form).display == "none"){
+            if (window.getComputedStyle(lookup_form).display != "none"){
+                lookup_form.hidden = true;
+            }
+            add_form.hidden = false;
+        } else {
+            add_form.hidden = true;
+        }
+    }
+
 </script>

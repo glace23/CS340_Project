@@ -23,7 +23,7 @@
         <input type="text" name="student number" id="studentnumber">
     </div>
     <div class="student-form">
-        <label for="student name">Student Phone Number </label>
+        <label for="student name">Student Phone Number: </label>
         <input type="text" name="student phone number" id="studentphonenumber" maxlength="10">
     </div>
     <div class="student-form">
@@ -35,25 +35,25 @@
     <h3>Add a Student:</h3>
     <p>Add a new student to the database. All fields are required.</p> 
     <div>
-        <label for="sfname">Student First name:</label>
+        <label for="sfname">Student First Name:</label>
         <input type="text" id="sfname" name="sfname" placeholder="John">
     </div>
     <div>
-        <label for="slname">Last name:</label>
+        <label for="slname">Student Last Name:</label>
         <input type="text" id="slname" name="slname" placeholder="Doe">
     </div>
     <div>
-        <label for="semail">Email:</label>
+        <label for="semail">Student Email:</label>
         <input type="text" id="semail" name="semail" placeholder="doejohn@osu.edu">
     </div>
     <div>
-        <label for="snumber">Student Number:</label>
+        <label for="snumber">Student ID Number:</label>
         <input type="text" id="snumber" name="snumber" placeholder="OSU1234567"></div>
     <div>
-        <label for="sphone">Phone Number:</label>
+        <label for="sphone">Student Phone Number:</label>
         <input type="text" id="sphone" name="sphone" placeholder="1112223333">
     </div>
-  <input type="submit" value="Add">
+  <input type="submit" value="Add New Student">
 </form>
 
 <div>
@@ -184,6 +184,7 @@
         return false;
     }
 
+    // toggle student look up form
     function showStudentLookup(){
         lookup_form = document.getElementById("student-lookup");
         add_form = document.getElementById("student-add");
@@ -197,6 +198,7 @@
         }
     }
 
+    // toggle student add form
     function showStudentAdd(){
         lookup_form = document.getElementById("student-lookup");
         add_form = document.getElementById("student-add");

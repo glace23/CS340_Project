@@ -1,9 +1,11 @@
 <h1>Student Lookup</h1>
 
-<h3>Look for Student:</h3>
-<p>Search for the fields you would like to, all fields are optional.</p>
+<button onclick="showStudentLookup()">Look for Student</button><button onclick="showStudentAdd()">Add Student</button>
 
-<form>
+<form id="student-lookup" hidden>
+    <h3>Look for Student:</h3>
+    <p>Search for the fields you would like to, all fields are optional.</p>
+    
     <div class="student-form">
         <label for="student fname">Student First Name: </label>
         <input type="text" name="student fname" id="studentfname">
@@ -27,6 +29,31 @@
     <div class="student-form">
         <button onclick="return checkString();">Search</button>
     </div>
+</form>
+
+<form id="student-add" hidden>
+    <h3>Add a Student:</h3>
+    <p>Add a new student to the database. All fields are required.</p> 
+    <div>
+        <label for="sfname">Student First name:</label>
+        <input type="text" id="sfname" name="sfname" placeholder="John">
+    </div>
+    <div>
+        <label for="slname">Last name:</label>
+        <input type="text" id="slname" name="slname" placeholder="Doe">
+    </div>
+    <div>
+        <label for="semail">Email:</label>
+        <input type="text" id="semail" name="semail" placeholder="doejohn@osu.edu">
+    </div>
+    <div>
+        <label for="snumber">Student Number:</label>
+        <input type="text" id="snumber" name="snumber" placeholder="OSU1234567"></div>
+    <div>
+        <label for="sphone">Phone Number:</label>
+        <input type="text" id="sphone" name="sphone" placeholder="1112223333">
+    </div>
+  <input type="submit" value="Add">
 </form>
 
 <div>
@@ -155,5 +182,31 @@
         }
         document.getElementById("searchvalue").innerHTML = search;
         return false;
+    }
+
+    function showStudentLookup(){
+        lookup_form = document.getElementById("student-lookup");
+        add_form = document.getElementById("student-add");
+        if (window.getComputedStyle(lookup_form).display == "none"){
+            if (window.getComputedStyle(add_form).display != "none"){
+                add_form.hidden = true;
+            }
+            lookup_form.hidden = false;
+        } else {
+            lookup_form.hidden = true;
+        }
+    }
+
+    function showStudentAdd(){
+        lookup_form = document.getElementById("student-lookup");
+        add_form = document.getElementById("student-add");
+        if (window.getComputedStyle(add_form).display == "none"){
+            if (window.getComputedStyle(lookup_form).display != "none"){
+                lookup_form.hidden = true;
+            }
+            add_form.hidden = false;
+        } else {
+            add_form.hidden = true;
+        }
     }
 </script>

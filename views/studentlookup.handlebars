@@ -53,7 +53,7 @@
         <label for="sphone">Student Phone Number:</label>
         <input type="text" id="sphone" name="sphone" placeholder="1112223333">
     </div>
-  <input type="submit" value="Add New Student">
+  <input type="submit" value="Add New Student" id="addStudent">
 </form>
 
 <div>
@@ -68,7 +68,7 @@
             <th>Student Email</th>
             <th>Student ID Number</th>
             <th>Student Phone Number</th>
-        </tr>
+            <th>Student Table ID</th>
         
     </thead>
     <tbody>
@@ -79,8 +79,9 @@
             <td>{{studentEmail}}</td>
             <td>{{studentNumber}}</td>
             <td>{{studentPhoneNumber}}</td>
-            <td><button onclick="">Update</button></td>
-            <td><button onclick="">Delete</button></td>
+            <td>{{studentID}}</td>
+            <td><button value={{studentID}} onclick="">Update</button></td>
+            <td><button value={{studentID}} onclick="deleteStudent({{studentID}})">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
@@ -177,4 +178,43 @@
             add_form.hidden = true;
         }
     }
+
+    function deleteStudent(studentID) {
+       var req = new XMLHttpRequest();
+       var data = {};
+       data.id = studentID;
+       
+       req.open("POST", "/delete-student", true);
+       req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+       req.addEventListener("load", () => {
+           if (req.status >= 200 && req.status < 400) {
+               window.location.reload();
+           } else {
+               console.log("ERROR");
+           }
+       })
+
+       req.send(JSON.stringify(data));
+    }
+
+    let addStudentButton = Document.getElementById("addStudent");
+    let studentFirstNameAdd = Document.getElementById("sfname");
+    let studentLastNameAdd = Document.getElementById("slname");
+    let studentEmailAdd = Document.getElementById("semail");
+    let studentNumberAdd = Document.getElementById("snumber");
+    let studentPhoneNumberAdd = Document.getElementById("sphone");
+    // Listen for adding a new student
+    addStudentButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        
+        var letters = /^[A-Za-z]+$/;  // validate for letters only
+        // Validate form inputs
+        if (!studentFirstNameAdd.value.match(letters)){
+            alert("Student first name can only be letters.");
+            return;
+        }
+
+
+    })
+
 </script>

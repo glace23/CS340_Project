@@ -1,12 +1,15 @@
 var express = require('express');
 var path = require('path');
 var app = express();
+var mysql = require('./database/dbcon.js');
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
-var path = require('path')
+
+PORT = 30338;
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
-app.set('port', 30245);
+app.set('port', PORT);
+app.set('mysql', mysql);
 
 // post
 var bodyParser = require('body-parser');
@@ -14,6 +17,18 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.get('/student', function (req, res){
+  context = {};
+  select_query = "SELECT studentFirstName, studentLastName, studentEmail, studentNumber, studentPhoneNumber FROM Students";
+  mysql.pool.query(select_query, (error, results, fields) => {
+    if(error) {
+        res.write(JSON.stringify(error));
+        res.end();
+    }
+    context.students = results;
+    return res.render('studentlookup', context);
+  });
+});
 
 app.get('/css', function(req,res){
       var options = { 
@@ -30,19 +45,15 @@ app.get('/lookup',function(req,res){
   res.render('lookup')
 });
 
-app.get('/lookup/student',function(req,res){
-  res.render('studentlookup')
-});
-
-app.get('/lookup/professor',function(req,res){
+app.get('/professor',function(req,res){
   res.render('professorlookup')
 });
 
-app.get('/lookup/course',function(req,res){
+app.get('/course',function(req,res){
   res.render('courselookup')
 });
 
-app.get('/lookup/room',function(req,res){
+app.get('/room',function(req,res){
   res.render('roomlookup')
 });
 

@@ -4,7 +4,7 @@ var app = express();
 var mysql = require('./database/dbcon.js');
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 
-PORT = 30338;
+PORT = 30245;
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');

@@ -29,8 +29,8 @@ app.get('/',function(req,res){
   res.render('home')
 });
 
-app.get('/lookup',function(req,res){
-  res.render('lookup')
+app.get('/enrollment',function(req,res){
+  res.render('enrollment')
 });
 
 app.get('/professor',function(req,res){

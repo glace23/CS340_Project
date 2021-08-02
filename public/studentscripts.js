@@ -9,6 +9,7 @@ function lookUpStudent(){
 
     let search = '';
     document.getElementById("searchresults").hidden = false;
+    
 
 
     if (checkfname !== ''){
@@ -48,8 +49,8 @@ function lookUpStudent(){
     var param = "&studentFirstName=" + checkfname + "&studentFirstName="+ checklname + "&studentEmail="+ checkemail + "&studentNumber=" + checknumber + "&studentPhoneNumber=" + checkphonenumber;
     alert("/lookup-student?" + param);
     req.open("GET", "/lookup-student?" + param, true);
-   req.setRequestHeader("Content-Type", 'application/x-www-form-urlencoded');
-   req.addEventListener("load", () => {
+    req.setRequestHeader("Content-Type", 'application/x-www-form-urlencoded');
+    req.addEventListener("load", () => {
        if (req.status >= 200 && req.status < 400) {
            window.location.reload();
        } else {
@@ -58,6 +59,8 @@ function lookUpStudent(){
    })
 
    req.send("/lookup-student?" + param);  
+
+
 }
 
 // toggle student look up form
@@ -115,37 +118,38 @@ let studentNumberAdd = document.getElementById("snumber");
 let studentPhoneNumberAdd = document.getElementById("sphone");
 
 // Listen for adding a new student
-addStudentButton.addEventListener("click", (event) => {
-    event.preventDefault();
+window.onload=function() {
+    addStudentButton.addEventListener("click", (event) => {
+        event.preventDefault();
 
-    // form validation check
-    if (!addStudentForm.checkValidity()) {
-        alert("Improper inputs. Please try again.");
-        addStudentForm.find(':submit').click();
-    }
-    
-    // place students in dictionary
-    var req = new XMLHttpRequest();
-    var data = {};
-    data.studentFirstName = studentFirstNameAdd.value;
-    data.studentLastName = studentLastNameAdd.value;
-    data.studentEmail = studentEmailAdd.value;
-    data.studentNumber = studentNumberAdd.value;
-    data.studentPhoneNumber = studentPhoneNumberAdd.value;
-
-    // make  POST request to add
-    req.open("POST", "/insert-student", true);
-    req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    req.addEventListener("load", () => {
-        if (req.status >= 200 && req.status < 400) {
-            window.location.reload();
-        } else {
-            alert("Error adding student");
+        // form validation check
+        if (!addStudentForm.checkValidity()) {
+            alert("Improper inputs. Please try again.");
+            addStudentForm.find(':submit').click();
         }
-    })
-   req.send(JSON.stringify(data));
-})
+        
+        // place students in dictionary
+        var req = new XMLHttpRequest();
+        var data = {};
+        data.studentFirstName = studentFirstNameAdd.value;
+        data.studentLastName = studentLastNameAdd.value;
+        data.studentEmail = studentEmailAdd.value;
+        data.studentNumber = studentNumberAdd.value;
+        data.studentPhoneNumber = studentPhoneNumberAdd.value;
 
+        // make  POST request to add
+        req.open("POST", "/insert-student", true);
+        req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        req.addEventListener("load", () => {
+            if (req.status >= 200 && req.status < 400) {
+                window.location.reload();
+            } else {
+                alert("Error adding student");
+            }
+        })
+    req.send(JSON.stringify(data));
+    });
+}
 
 function updateStudent(studentID){
     let student = document.getElementById("student" + studentID);
@@ -161,7 +165,9 @@ function updateStudent(studentID){
     document.getElementById("editphonenumber").value = studentPhoneNumber;
     document.getElementById("editstudentid").value = studentID;
     document.getElementById("updateStudent").hidden = false;
+
 }
+
 
 function saveUpdateStudent() {
    var req = new XMLHttpRequest();

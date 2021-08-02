@@ -47,28 +47,31 @@ function deleteRoom(roomID){
 let addRoomButton = document.getElementById("addRoom");
 let roomNumberAdd = document.getElementById("roomNumberAdd");
 let addRoomForm = document.getElementById("room-add");
-addRoomButton.addEventListener("click", (event) => {
-    event.preventDefault();
-    
-    // form validation check
-    if (!addRoomForm.checkValidity()) {
-        alert("Improper inputs. Please try again.");
-        addRoomForm.find(':submit').click()
-    }
 
-    // place room number in dictionary
-    var req = new XMLHttpRequest();
-    var data = {};
-    data.roomNumber = roomNumberAdd.value;
-
-    req.open("POST", "/insert-room", true);
-    req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    req.addEventListener("load", () => {
-        if (req.status >= 200 && req.status < 400) {
-            window.location.reload();
-        } else {
-            alert("Error adding room.");
+window.onload=function() {
+    addRoomButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        
+        // form validation check
+        if (!addRoomForm.checkValidity()) {
+            alert("Improper inputs. Please try again.");
+            addRoomForm.find(':submit').click()
         }
-    })
-    req.send(JSON.stringify(data));
-});
+
+        // place room number in dictionary
+        var req = new XMLHttpRequest();
+        var data = {};
+        data.roomNumber = roomNumberAdd.value;
+
+        req.open("POST", "/insert-room", true);
+        req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        req.addEventListener("load", () => {
+            if (req.status >= 200 && req.status < 400) {
+                window.location.reload();
+            } else {
+                alert("Error adding room.");
+            }
+        })
+        req.send(JSON.stringify(data));
+    });
+}

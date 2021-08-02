@@ -4,7 +4,7 @@ var app = express();
 var mysql = require('./dbcon.js');
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 
-PORT = 30245;
+PORT = 30342;
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
@@ -33,25 +33,70 @@ app.get('/enrollment',function(req,res){
   res.render('enrollment')
 });
 
+
+//====================== Professors SQL Functions ======================
 app.get('/professor',function(req,res){
   res.render('professorlookup')
 });
 
-app.get('/course',function(req,res){
-  res.render('courselookup')
-});
 
-app.get('/room',function(req,res){
-  res.render('roomlookup')
-});
-
-
-//====================== STUDENT SQL FUNCTIONS ======================
+//====================== Courses SQL Functions ======================
 app.get('/student', function (req, res){
   context = {};
   select_query = "SELECT studentFirstName, studentLastName, studentEmail, studentNumber, studentPhoneNumber, studentID FROM Students";
   mysql.pool.query(select_query, (error, results, fields) => {
-    if(error) {
+    if (error) {
+        res.write(JSON.stringify(error));
+        res.end();
+    }
+    context.students = results;
+    return res.render('studentlookup', context);
+  });
+});
+
+//====================== Rooms SQL Functions ======================
+app.get('/room', function (req, res){
+  context = {};
+  select_query = "SELECT Rooms.roomID, roomNumber, Courses.courseName FROM Rooms LEFT JOIN Courses ON Rooms.roomID = Courses.roomID;";
+  mysql.pool.query(select_query, (error, results, fields) => {
+    if (error) {
+        res.write(JSON.stringify(error));
+        res.end();
+    }
+    context.room = results;
+    return res.render('roomlookup', context);
+  });
+});
+
+app.post('/delete-room', function (req, res, next){
+  delete_query = "DELETE FROM Rooms WHERE roomID = ?;";
+  mysql.pool.query(delete_query, [req.body.id], function(err, result) {
+    if (err) {
+      next(err);
+      return
+    }
+    res.send();
+  })
+});
+
+app.post('/insert-room', function (req, res, next) {
+  insert_query = "INSERT INTO Rooms(roomNumber) VALUES (?);";
+  mysql.pool.query(insert_query, [req.body.roomNumber], function(err, result) {
+      if (err) {
+        next(err);
+        return
+      }
+      res.send();
+    })
+});
+
+
+//====================== Students SQL Functions ======================
+app.get('/student', function (req, res){
+  context = {};
+  select_query = "SELECT studentFirstName, studentLastName, studentEmail, studentNumber, studentPhoneNumber, studentID FROM Students";
+  mysql.pool.query(select_query, (error, results, fields) => {
+    if (error) {
         res.write(JSON.stringify(error));
         res.end();
     }

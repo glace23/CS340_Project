@@ -2,34 +2,34 @@
 
 <button onclick="showStudentLookup()">Look for Student</button><button onclick="showStudentAdd()">Add Student</button>
 
-<form id="student-lookup" hidden>
-    <h3>Look for Student:</h3>
-    <p>Search for the fields you would like to, all fields are optional.</p>
-    
-    <div class="student-form">
-        <label for="student fname">Student First Name: </label>
-        <input type="text" name="student fname" id="studentfname">
-    </div>
-    <div class="student-form">
-        <label for="student name">Student Last Name: </label>
-        <input type="text" name="student lname" id="studentlname">
-    </div>
-    <div class="student-form">
-        <label for="student email">Student Email: </label>
-        <input type="email" name="student email" id="studentemail">
-    </div>
-    <div class="student-form">
-        <label for="student number">Student ID Number: </label>
-        <input type="text" name="student number" id="studentnumber">
-    </div>
-    <div class="student-form">
-        <label for="student name">Student Phone Number: </label>
-        <input type="text" name="student phone number" id="studentphonenumber" maxlength="10">
-    </div>
-    <div class="student-form">
-        <button onclick="return checkString();">Search</button>
-    </div>
-</form>
+<div id="student-lookup" hidden>
+    <form>
+        <h3>Look for Student:</h3>
+        <p>Search for the fields you would like to, all fields are optional.</p>
+        
+        <div class="student-form">
+            <label for="student fname">Student First Name: </label>
+            <input type="text" name="studentfname" id="studentfname" value="" pattern="[A-Za-z]+">
+        </div>
+        <div class="student-form">
+            <label for="student name">Student Last Name: </label>
+            <input type="text" name="studentlname" id="studentlname" value="" pattern="[A-Za-z]+">
+        </div>
+        <div class="student-form">
+            <label for="student email">Student Email: </label>
+            <input type="email" name="studentemail" id="studentemail" value="">
+        </div>
+        <div class="student-form">
+            <label for="student number">Student ID Number: </label>
+            <input type="text" name="studentnumber" id="studentnumber" value="" pattern="[0-9]{6}" minlength="6" maxlength="6">
+        </div>
+        <div class="student-form">
+            <label for="student name">Student Phone Number: </label>
+            <input type="text" name="studentphonenumber" id="studentphonenumber" maxlength="10" value="" pattern="[0-9]{10}" minlength="10" maxlength="10">
+        </div>
+    </form>
+    <button onclick="lookUpStudent()">Search</button>
+</div>
 
 <form id="student-add" hidden>
     <h3>Add a Student:</h3>
@@ -52,14 +52,43 @@
     </div>
     <div>
         <label for="sphone">Student Phone Number:</label>
-        <input type="tel" id="sphone" name="sphone" placeholder="1112223333" pattern="[0-9]{10}" required>
+        <input type="tel" id="sphone" name="sphone" placeholder="1112223333" pattern="[0-9]{10}" minlength="10" maxlength="10" required>
     </div>
   <input type="submit" value="Add New Student" id="addStudent">
 </form>
 
+<div id="searchresults" hidden>
+    <p id ="searchvalue"></p>
+    <table>
+        <thead>
+            <tr>
+                <th>Student First Name</th>
+                <th>Student Last Name</th>
+                <th>Student Email</th>
+                <th>Student ID Number</th>
+                <th>Student Phone Number</th>
+                <th>Student Table ID</th>
+            
+        </thead>
+        <tbody>
+            {{#each students}}
+            <tr id="student{{studentID}}">
+                <td>{{studentFirstName}}</td>
+                <td>{{studentLastName}}</td>
+                <td>{{studentEmail}}</td>
+                <td>{{studentNumber}}</td>
+                <td>{{studentPhoneNumber}}</td>
+                <td>{{studentID}}</td>
+                <td><button value={{studentID}} onclick="updateStudent({{studentID}})">Update</button></td>
+                <td><button value={{studentID}} onclick="deleteStudent({{studentID}})">Delete</button></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
 <div>
 <br>
-<p id="searchvalue"></p>
 <br>
 <table>
     <thead>
@@ -89,28 +118,30 @@
 </table>
 </div>
 <br>
-<p>When you hit update, below appears:</p>
-<table>
-    <thead>
-        <tr>
-            <th>Student First Name</th>
-            <th>Student Last Name</th>
-            <th>Student Email</th>
-            <th>Student ID Number</th>
-            <th>Student Phone Number</th>
-        </tr>
-        
-    </thead>
-    <tbody>
-        <tr>
-            <td><input type="text" id="editfname" value=""></input></td>    
-            <td><input type="text" id="editlname" value=""></input></td> 
-            <td><input type="text" id="editemail" value=""></input></td>    
-            <td><input type="text" id="editnumber" value="" disabled></input></td>  
-            <td><input type="text" id="editphonenumber" value=""></input></td>
-            <td><input type="text" id="editstudentid" value="" disabled></input></td> 
-            <td><button onclick="saveUpdateStudent()">Save</button></td>
-        </tr>
-    </tbody>
-</table>
-<br>
+
+<div id="updateStudent" hidden>
+    <h2>Update Student</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Student First Name</th>
+                <th>Student Last Name</th>
+                <th>Student Email</th>
+                <th>Student ID Number</th>
+                <th>Student Phone Number</th>
+            </tr>
+            
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" id="editfname" value="" pattern="[A-Za-z]+""></input></td>    
+                <td><input type="text" id="editlname" value="" pattern="[A-Za-z]+""></input></td> 
+                <td><input type="text" id="editemail" value=""></input></td>    
+                <td><input type="text" id="editnumber" value="" disabled></input></td>  
+                <td><input type="tel" id="editphonenumber" value="" pattern="[0-9]{10}" minlength="10" maxlength="10"></input></td>
+                <td><input type="text" id="editstudentid" value="" disabled hidden></input></td> 
+                <td><button onclick="saveUpdateStudent()">Save</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

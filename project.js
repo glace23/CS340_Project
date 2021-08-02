@@ -184,6 +184,24 @@ app.post('/update-student', function (req, res, next){
   })
 });
 
+
+app.get('/lookup-student', function (req, res){
+  context = {};
+  select_query = "SELECT * FROM Students WHERE studentFirstName = ?";
+  console.log = req.query;
+  mysql.pool.query(select_query, [req.query.studentFirstName], 
+    (error, results, fields) => {
+    if (error) {
+        res.write(JSON.stringify(error));
+        res.end();
+    }
+    context.lookup = results;
+    res.render('slookup', context);
+  });
+});
+
+
+
 app.use(function(req,res){
   res.status(404);
   res.render('404');

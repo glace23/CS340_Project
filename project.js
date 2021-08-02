@@ -41,17 +41,8 @@ app.get('/professor',function(req,res){
 
 
 //====================== Courses SQL Functions ======================
-app.get('/student', function (req, res){
-  context = {};
-  select_query = "SELECT studentFirstName, studentLastName, studentEmail, studentNumber, studentPhoneNumber, studentID FROM Students";
-  mysql.pool.query(select_query, (error, results, fields) => {
-    if (error) {
-        res.write(JSON.stringify(error));
-        res.end();
-    }
-    context.students = results;
-    return res.render('studentlookup', context);
-  });
+app.get('/course',function(req,res){
+  res.render('courselookup')
 });
 
 //====================== Rooms SQL Functions ======================

@@ -52,7 +52,7 @@
     </div>
     <div>
         <label for="sphone">Student Phone Number:</label>
-        <input type="tel" id="sphone" name="sphone" placeholder="1112223333" pattern="[0-9]{9}" required>
+        <input type="tel" id="sphone" name="sphone" placeholder="1112223333" pattern="[0-9]{10}" required>
     </div>
   <input type="submit" value="Add New Student" id="addStudent">
 </form>
@@ -198,16 +198,36 @@
        req.send(JSON.stringify(data));
     }
 
-    let addStudentButton = Document.getElementById("addStudent");
-    let studentFirstNameAdd = Document.getElementById("sfname");
-    let studentLastNameAdd = Document.getElementById("slname");
-    let studentEmailAdd = Document.getElementById("semail");
-    let studentNumberAdd = Document.getElementById("snumber");
-    let studentPhoneNumberAdd = Document.getElementById("sphone");
+    let addStudentButton = document.getElementById("addStudent");
+    let studentFirstNameAdd = document.getElementById("sfname");
+    let studentLastNameAdd = document.getElementById("slname");
+    let studentEmailAdd = document.getElementById("semail");
+    let studentNumberAdd = document.getElementById("snumber");
+    let studentPhoneNumberAdd = document.getElementById("sphone");
     // Listen for adding a new student
     addStudentButton.addEventListener("click", (event) => {
         event.preventDefault();
         
+        // place students in dictionary
+        var req = new XMLHttpRequest();
+        var data = {};
+        data.studentFirstName = studentFirstNameAdd.value;
+        data.studentLastName = studentLastNameAdd.value;
+        data.studentEmail = studentEmailAdd.value;
+        data.studentNumber = studentNumberAdd.value;
+        data.studentPhoneNumber = studentPhoneNumberAdd.value;
+
+        // make  POST request to add
+        req.open("POST", "/insert-student", true);
+        req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        req.addEventListener("load", () => {
+            if (req.status >= 200 && req.status < 400) {
+                window.location.reload();
+            } else {
+                alert("Error adding student");
+            }
+        })
+       req.send(JSON.stringify(data));
     })
 
 </script>

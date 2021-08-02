@@ -31,21 +31,21 @@
     <p>Add a new professor to the database. All fields are required.</p>
     <div>
         <label for="pfname">Professor First Name:</label>
-        <input type="text" id="pfname" name="pfname" placeholder="Jane">
+        <input type="text" id="pfname" name="pfname" placeholder="Jane" pattern="[A-Za-z]+" required>
     </div>
     <div>
         <label for="plname">Professor Last Name:</label>
-        <input type="text" id="plname" name="plname" placeholder="Doe">
+        <input type="text" id="plname" name="plname" placeholder="Doe" pattern="[A-Za-z]+" required>
     </div>
     <div>
         <label for="pemail">Professor Email:</label>
-        <input type="text" id="pemail" name="pemail" placeholder="doejane@osu.edu">
+        <input type="email" id="pemail" name="pemail" placeholder="doejane@osu.edu" required>
     </div>
     <div>
         <label for="pnumber">Professor ID Number:</label>
-        <input type="text" id="pnumber" name="pnumber" placeholder="P1234567">
+        <input type="text" id="pnumber" name="pnumber" placeholder="P1234567" pattern="[P]{1}[0-9]{6}" minlength="7" maxlength="7" required> 
     </div>
-    <input type="submit" value="Add Professor">
+    <input type="submit" value="Add Professor" id="addProfessor">
 </form>
 
 <div>
@@ -59,35 +59,18 @@
             <th>Professor Last Name</th>
             <th>Professor Email</th>
             <th>Professor ID Number</th>
-            
-        </tr>
-        
     </thead>
     <tbody>
+        {{#each professors}}
         <tr>
-            <td>Kiera</td>
-            <td>Constant</td>
-            <td>kconstant@osu.edu</td>
-            <td>63079</td>
-            <td><button>Update</button></td>
-            <td><button>Delete</button></td>
+            <td>{{professorFirstName}}</td>
+            <td>{{professorLastName}}</td>
+            <td>{{professorEmail}}</td>
+            <td>{{professorNumber}}</td>
+           <td><button onclick="">Update</button></td>
+            <td><button onclick="deleteProfessor({{professorID}})">Delete</button></td>
         </tr>
-        <tr>
-            <td>Jocelyne</td>
-            <td>Lukas</td>
-            <td>jlukas@osu.edu</td>
-            <td>19047</td>
-            <td><button>Update</button></td>
-            <td><button>Delete</button></td>
-        </tr>
-        <tr>
-            <td>Rita</td>
-            <td>Pravin</td>
-            <td>rpravin@osu.edu</td>
-            <td>51729</td>
-            <td><button>Update</button></td>
-            <td><button>Delete</button></td>
-        </tr>
+        {{/each}}
     </tbody>
 </table>
 </div>

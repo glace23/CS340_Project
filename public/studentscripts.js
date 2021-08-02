@@ -81,15 +81,23 @@ function deleteStudent(studentID) {
    req.send(JSON.stringify(data));
 }
 
+let addStudentForm = document.getElementById("student-add");
 let addStudentButton = document.getElementById("addStudent");
 let studentFirstNameAdd = document.getElementById("sfname");
 let studentLastNameAdd = document.getElementById("slname");
 let studentEmailAdd = document.getElementById("semail");
 let studentNumberAdd = document.getElementById("snumber");
 let studentPhoneNumberAdd = document.getElementById("sphone");
+
 // Listen for adding a new student
 addStudentButton.addEventListener("click", (event) => {
     event.preventDefault();
+
+    // form validation check
+    if (!addStudentForm.checkValidity()) {
+        alert("Improper inputs. Please try again.");
+        addStudentForm.find(':submit').click()
+    }
     
     // place students in dictionary
     var req = new XMLHttpRequest();

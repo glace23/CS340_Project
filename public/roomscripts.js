@@ -46,9 +46,16 @@ function deleteRoom(roomID){
 
 let addRoomButton = document.getElementById("addRoom");
 let roomNumberAdd = document.getElementById("roomNumberAdd");
+let addRoomForm = document.getElementById("room-add");
 addRoomButton.addEventListener("click", (event) => {
     event.preventDefault();
     
+    // form validation check
+    if (!addRoomForm.checkValidity()) {
+        alert("Improper inputs. Please try again.");
+        addRoomForm.find(':submit').click()
+    }
+
     // place room number in dictionary
     var req = new XMLHttpRequest();
     var data = {};

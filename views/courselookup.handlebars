@@ -39,23 +39,23 @@
     <p>Add a new courese. All fields are required.</p>
     <div>
         <label for="cname">Course Name:</label>
-        <input type="text" id="cname" name="cname" placeholder="CS344">
+        <input type="text" id="cname" name="cname" placeholder="CS344" required>
     </div>
     <div>
         <label for="cstart">Start Date:</label>
-        <input type="date" id="cstart" name="cstart">
+        <input type="date" id="cstart" name="cstart" required>
     </div>
     <div>
         <label for="cend">End Date:</label>
-        <input type="date" id="cend" name="cend">
+        <input type="date" id="cend" name="cend" required>
     </div>
     <div>
         <label for="croom">Room Number:</label>
-        <input type="text" id="croom" name="croom" placeholder="A302">
+        <input type="text" id="croom" name="croom" placeholder="A302" required>
     </div>
     <div>
         <label for="cnumber">Professor Number:</label>
-        <input type="text" id="cnumber" name="cnumber" placeholder="P1234567">
+        <input type="text" id="cnumber" name="cnumber" placeholder="P1234567" required>
     </div>
     <input type="submit" value="Add Course">
 </form>
@@ -78,37 +78,18 @@
         
     </thead>
     <tbody>
+        {{#each courses}}
         <tr>
-            <td>CS340   
-            <td>2021-07-01  
-            <td>2021-08-15  
-            <td>C441   
-            <td>Kiera 
-            <td>Constant  
-            <td><button>Update</button></td>
-            <td><button>Delete</button></td>
+            <td>{{courseName}}</td>
+            <td>{{startDate}}</td>
+            <td>{{endDate}}</td>
+            <td>{{roomN}}</td>
+            <td>{{professorFN}}</td>
+            <td>{{professorLN}}</td>
+            <td><button onclick="">Update</button></td>
+            <td><button onclick="deleteCourse({{courseID}})">Delete</button></td>
         </tr>
-        <tr>
-            <td>CS161  
-            <td>2021-07-01  
-            <td>2021-08-15  
-            <td>A102   
-            <td>Jocelyne 
-            <td>Lukas  
-            <td><button>Update</button></td>
-            <td><button>Delete</button></td>
-        </tr>
-        <tr>
-            <td>CS162   
-            <td>2021-07-01  
-            <td>2021-08-15  
-            <td>L306   
-            <td>Rita 
-            <td>Pravin  
-            <td><button>Update</button></td>
-            <td><button>Delete</button></td>
-        </tr>
-
+        {{/each}}
     </tbody>
 </table>
 <br>

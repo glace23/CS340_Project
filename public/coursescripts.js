@@ -67,3 +67,21 @@ function showCourseAdd(){
         add_form.hidden = true;
     }
 }
+
+function deleteCourse(courseID) {
+    var req = new XMLHttpRequest();
+   var data = {};
+   data.id = courseID;
+   
+   req.open("POST", "/delete-course", true);
+   req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+   req.addEventListener("load", () => {
+       if (req.status >= 200 && req.status < 400) {
+           window.location.reload();
+       } else {
+           console.log("ERROR");
+       }
+   })
+
+   req.send(JSON.stringify(data));
+}

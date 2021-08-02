@@ -35,15 +35,67 @@ app.get('/enrollment',function(req,res){
 
 
 //====================== Professors SQL Functions ======================
-app.get('/professor',function(req,res){
-  res.render('professorlookup')
+app.get('/professor', function (req, res){
+  context = {};
+  select_query = "SELECT professorID, professorFirstName, professorLastName, professorEmail, professorNumber FROM Professors;";
+  mysql.pool.query(select_query, (error, results, fields) => {
+    if (error) {
+        res.write(JSON.stringify(error));
+        res.end();
+    }
+    context.professors = results;
+    return res.render('professorlookup', context);
+  });
+});
+
+app.post('/delete-professor', function (req, res, next){
+  delete_query = "DELETE FROM Professors WHERE professorID = ?";
+  mysql.pool.query(delete_query, [req.body.id], function(err, result) {
+    if (err) {
+      next(err);
+      return;
+    }
+    res.send();
+  })
+});
+
+app.post('/insert-professor', function (req, res, next) {
+  insert_query = "INSERT INTO Professors (professorFirstName, professorLastName, professorEmail, professorNumber) VALUES (?, ?, ?, ?);";
+  mysql.pool.query(insert_query, [req.body.professorFirstName, req.body.professorLastName, req.body.professorEmail, req.body.professorNumber], function(err, result) {
+      if (err) {
+        next(err);
+        return
+      }
+      res.send();
+    })
 });
 
 
 //====================== Courses SQL Functions ======================
-app.get('/course',function(req,res){
-  res.render('courselookup')
+app.get('/course', function (req, res){
+  context = {};
+  select_query = "SELECT courseID, courseName, DATE_FORMAT(courseStartDate, '%m-%d-%Y') AS startDate, DATE_FORMAT(courseEndDate, '%m-%d-%Y') AS endDate, Rooms.roomNumber AS roomN, Professors.professorFirstName AS professorFN, Professors.professorLastName AS professorLN FROM Courses INNER JOIN Professors ON Courses.professorID = Professors.professorID LEFT JOIN Rooms ON Courses.roomID = Rooms.roomID;";
+  mysql.pool.query(select_query, (error, results, fields) => {
+    if (error) {
+        res.write(JSON.stringify(error));
+        res.end();
+    }
+    context.courses = results;
+    return res.render('courselookup', context);
+  });
 });
+
+app.post('/delete-course', function (req, res, next){
+  delete_query = "DELETE FROM Courses WHERE courseID = ?";
+  mysql.pool.query(delete_query, [req.body.id], function(err, result) {
+    if (err) {
+      next(err);
+      return
+    }
+    res.send();
+  })
+});
+
 
 //====================== Rooms SQL Functions ======================
 app.get('/room', function (req, res){

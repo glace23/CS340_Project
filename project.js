@@ -101,6 +101,16 @@ app.post('/delete-course', function (req, res, next){
 app.get('/room', function (req, res){
   context = {};
   select_query = "SELECT Rooms.roomID, roomNumber, Courses.courseName FROM Rooms LEFT JOIN Courses ON Rooms.roomID = Courses.roomID;";
+
+  // For search queries
+  if (req.query.roomNumber != '' && req.query.courseName == '') {
+    select_query = `SELECT Rooms.roomID, roomNumber, Courses.courseName FROM Rooms LEFT JOIN Courses ON Rooms.roomID = Courses.roomID WHERE roomNumber = '${req.query.roomNumber}';`;
+  } else if (req.query.roomNumber == '' && req.query.courseName != '') {
+    select_query = `SELECT Rooms.roomID, roomNumber, Courses.courseName FROM Rooms LEFT JOIN Courses ON Rooms.roomID = Courses.roomID WHERE Courses.courseName = '${req.query.courseName}';`;
+  } else if (req.query.roomNumber != undefined && req.query.courseName != undefined) {
+    select_query = `SELECT Rooms.roomID, roomNumber, Courses.courseName FROM Rooms LEFT JOIN Courses ON Rooms.roomID = Courses.roomID WHERE roomNumber = '${req.query.roomNumber}' AND Courses.courseName = '${req.query.courseName}';`;
+  } 
+  
   mysql.pool.query(select_query, (error, results, fields) => {
     if (error) {
         res.write(JSON.stringify(error));
@@ -199,7 +209,6 @@ app.get('/lookup-student', function (req, res){
     res.render('slookup', context);
   });
 });
-
 
 
 app.use(function(req,res){

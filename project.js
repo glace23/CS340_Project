@@ -83,10 +83,6 @@ app.post('/insert-student', function (req, res, next) {
     })
 });
 
-app.get('/add',function(req,res){
-  res.render('add')
-});
-
 app.use(function(req,res){
   res.status(404);
   res.render('404');

@@ -10,6 +10,7 @@ app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.set('port', PORT);
 app.set('mysql', mysql);
+app.use(express.static('public'));
 
 // post
 var bodyParser = require('body-parser');

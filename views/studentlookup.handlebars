@@ -36,22 +36,23 @@
     <p>Add a new student to the database. All fields are required.</p> 
     <div>
         <label for="sfname">Student First Name:</label>
-        <input type="text" id="sfname" name="sfname" placeholder="John">
+        <input type="text" id="sfname" name="sfname" placeholder="John" pattern="[A-Za-z]+" required>
     </div>
     <div>
         <label for="slname">Student Last Name:</label>
-        <input type="text" id="slname" name="slname" placeholder="Doe">
+        <input type="text" id="slname" name="slname" placeholder="Doe" pattern="[A-Za-z]+" required>
     </div>
     <div>
         <label for="semail">Student Email:</label>
-        <input type="text" id="semail" name="semail" placeholder="doejohn@osu.edu">
+        <input type="email" id="semail" name="semail" placeholder="doejohn@osu.edu" required>
     </div>
     <div>
         <label for="snumber">Student ID Number:</label>
-        <input type="text" id="snumber" name="snumber" placeholder="OSU1234567"></div>
+        <input type="text" id="snumber" name="snumber" placeholder="123456" pattern="[0-9]{6}" minlength="6" maxlength="6" required>
+    </div>
     <div>
         <label for="sphone">Student Phone Number:</label>
-        <input type="text" id="sphone" name="sphone" placeholder="1112223333">
+        <input type="tel" id="sphone" name="sphone" placeholder="1112223333" pattern="[0-9]{9}" required>
     </div>
   <input type="submit" value="Add New Student" id="addStudent">
 </form>
@@ -207,14 +208,6 @@
     addStudentButton.addEventListener("click", (event) => {
         event.preventDefault();
         
-        var letters = /^[A-Za-z]+$/;  // validate for letters only
-        // Validate form inputs
-        if (!studentFirstNameAdd.value.match(letters)){
-            alert("Student first name can only be letters.");
-            return;
-        }
-
-
     })
 
 </script>

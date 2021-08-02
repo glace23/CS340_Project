@@ -74,14 +74,14 @@
     </thead>
     <tbody>
         {{#each students}}
-        <tr>
+        <tr id="student{{studentID}}">
             <td>{{studentFirstName}}</td>
             <td>{{studentLastName}}</td>
             <td>{{studentEmail}}</td>
             <td>{{studentNumber}}</td>
             <td>{{studentPhoneNumber}}</td>
             <td>{{studentID}}</td>
-            <td><button value={{studentID}} onclick="">Update</button></td>
+            <td><button value={{studentID}} onclick="updateStudent({{studentID}})">Update</button></td>
             <td><button value={{studentID}} onclick="deleteStudent({{studentID}})">Delete</button></td>
         </tr>
         {{/each}}
@@ -103,12 +103,13 @@
     </thead>
     <tbody>
         <tr>
-            <td><input type="text" id="editfname" value="Wulf"></input></td>    
-            <td><input type="text" id="editlname" value="Archana"></input></td> 
-            <td><input type="text" id="editemail" value="warchana@osu.edu"></input></td>    
-            <td><input type="text" id="editnumber" value="432238" disabled></input></td>  
-            <td><input type="text" id="editphonenumber" value="9122411950"></input></td>
-            <td><button>Save</button></td>
+            <td><input type="text" id="editfname" value=""></input></td>    
+            <td><input type="text" id="editlname" value=""></input></td> 
+            <td><input type="text" id="editemail" value=""></input></td>    
+            <td><input type="text" id="editnumber" value="" disabled></input></td>  
+            <td><input type="text" id="editphonenumber" value=""></input></td>
+            <td><input type="text" id="editstudentid" value="" disabled></input></td> 
+            <td><button onclick="saveUpdateStudent()">Save</button></td>
         </tr>
     </tbody>
 </table>

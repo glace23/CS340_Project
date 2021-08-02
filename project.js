@@ -172,6 +172,18 @@ app.post('/insert-student', function (req, res, next) {
     })
 });
 
+app.post('/update-student', function (req, res, next){
+  update_query = "UPDATE Students SET studentFirstName = ?, studentLastName = ?, studentEmail = ?, studentPhoneNumber = ? WHERE studentID = ?";
+  mysql.pool.query(update_query, [req.body.studentFirstName, req.body.studentLastName, req.body.studentEmail, req.body.studentPhoneNumber, req.body.id], 
+    function(err, result) {
+    if (err) {
+      next(err);
+      return
+    }
+    res.send();
+  })
+});
+
 app.use(function(req,res){
   res.status(404);
   res.render('404');

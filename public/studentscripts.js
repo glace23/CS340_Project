@@ -120,3 +120,43 @@ addStudentButton.addEventListener("click", (event) => {
     })
    req.send(JSON.stringify(data));
 })
+
+
+function updateStudent(studentID){
+    let student = document.getElementById("student" + studentID);
+    let studentFirstName = student.cells[0].innerHTML;
+    let studentLastName = student.cells[1].innerHTML;
+    let studentEmail = student.cells[2].innerHTML;
+    let studentNumber = student.cells[3].innerHTML;
+    let studentPhoneNumber = student.cells[4].innerHTML;
+    document.getElementById("editfname").value = studentFirstName;
+    document.getElementById("editlname").value = studentLastName;
+    document.getElementById("editemail").value = studentEmail;
+    document.getElementById("editnumber").value = studentNumber;
+    document.getElementById("editphonenumber").value = studentPhoneNumber;
+    document.getElementById("editstudentid").value = studentID;
+
+}
+
+
+function saveUpdateStudent() {
+   var req = new XMLHttpRequest();
+   var data = {};
+   data.studentFirstName = document.getElementById("editfname").value;
+   data.studentLastName = document.getElementById("editlname").value;
+   data.studentEmail = document.getElementById("editemail").value;
+   data.studentPhoneNumber = document.getElementById("editphonenumber").value;
+   data.id = document.getElementById("editstudentid").value;
+   
+   req.open("POST", "/update-student", true);
+   req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+   req.addEventListener("load", () => {
+       if (req.status >= 200 && req.status < 400) {
+           window.location.reload();
+       } else {
+           console.log("ERROR");
+       }
+   })
+
+   req.send(JSON.stringify(data));
+}

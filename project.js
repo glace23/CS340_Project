@@ -64,7 +64,7 @@ app.post('/insert-professor', function (req, res, next) {
   mysql.pool.query(insert_query, [req.body.professorFirstName, req.body.professorLastName, req.body.professorEmail, req.body.professorNumber], function(err, result) {
       if (err) {
         next(err);
-        return
+        return;
       }
       res.send();
     })
@@ -74,7 +74,7 @@ app.post('/insert-professor', function (req, res, next) {
 //====================== Courses SQL Functions ======================
 app.get('/course', function (req, res){
   context = {};
-  select_query = "SELECT courseID, courseName, DATE_FORMAT(courseStartDate, '%m-%d-%Y') AS startDate, DATE_FORMAT(courseEndDate, '%m-%d-%Y') AS endDate, Rooms.roomNumber AS roomN, Professors.professorFirstName AS professorFN, Professors.professorLastName AS professorLN FROM Courses INNER JOIN Professors ON Courses.professorID = Professors.professorID LEFT JOIN Rooms ON Courses.roomID = Rooms.roomID;";
+  select_query = "SELECT courseID, courseName, DATE_FORMAT(courseStartDate, '%m-%d-%Y') AS startDate, DATE_FORMAT(courseEndDate, '%m-%d-%Y') AS endDate, Rooms.roomNumber AS roomN, Professors.professorFirstName AS professorFN, Professors.professorLastName AS professorLN FROM Courses LEFT JOIN Professors ON Courses.professorID = Professors.professorID LEFT JOIN Rooms ON Courses.roomID = Rooms.roomID;";
   mysql.pool.query(select_query, (error, results, fields) => {
     if (error) {
         res.write(JSON.stringify(error));
@@ -90,10 +90,23 @@ app.post('/delete-course', function (req, res, next){
   mysql.pool.query(delete_query, [req.body.id], function(err, result) {
     if (err) {
       next(err);
-      return
+      return;
     }
     res.send();
   })
+});
+
+app.post('/insert-course', function (req, res, next) {
+  insert_query = "INSERT INTO Courses(courseName, courseStartDate, courseEndDate, roomID, professorID) VALUES (?, ?, ?, (SELECT roomID FROM Rooms WHERE roomNumber = ?), (SELECT professorID FROM Professors WHERE professorNumber = ?));";
+  mysql.pool.query(insert_query, 
+    [req.body.courseName, req.body.courseStartDateAdd, req.body.courseEndDateAdd, req.body.courseRoomAdd, req.body.courseProfessor],
+    function(err, result) {
+      if (err) {
+        next(err);
+        return;
+      }
+      res.send();
+    })
 });
 
 
@@ -209,6 +222,7 @@ app.get('/lookup-student', function (req, res){
     res.render('slookup', context);
   });
 });
+
 
 
 app.use(function(req,res){

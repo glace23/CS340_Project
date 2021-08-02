@@ -34,12 +34,12 @@
     </div>
 </form>
 
-<form id="course-add" hidden>
+<form id="course-add" onSubmit="addCourse()" hidden>
     <h3>Add a Course:</h3>
-    <p>Add a new courese. All fields are required.</p>
+    <p>Add a new course. All fields are required.</p>
     <div>
         <label for="cname">Course Name:</label>
-        <input type="text" id="cname" name="cname" placeholder="CS344" required>
+        <input type="text" id="cname" name="cname" placeholder="CS344" pattern="[A-Za-z]{2}[0-9]{3}" maxlength="5" required>
     </div>
     <div>
         <label for="cstart">Start Date:</label>
@@ -51,13 +51,13 @@
     </div>
     <div>
         <label for="croom">Room Number:</label>
-        <input type="text" id="croom" name="croom" placeholder="A302" required>
+        <input type="text" id="croom" name="croom" placeholder="A302" pattern="[A-Z]{1}[0-9]{3}" maxlength="4" required>
     </div>
     <div>
-        <label for="cnumber">Professor Number:</label>
-        <input type="text" id="cnumber" name="cnumber" placeholder="P1234567" required>
+        <label for="cnumber">Professor ID Number:</label>
+        <input type="text" id="pnumber" name="cnumber" placeholder="12345" pattern="[0-9]{5}" minlength="5" maxlength="5" required>
     </div>
-    <input type="submit" value="Add Course">
+    <input type="submit" value="Add Course" id="addCourse">
 </form>
 
 

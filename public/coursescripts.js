@@ -85,3 +85,46 @@ function deleteCourse(courseID) {
 
    req.send(JSON.stringify(data));
 }
+
+let addCourseForm = document.getElementById("course-add");
+let addCourseButton = document.getElementById("addCourse");
+let courseNameAdd = document.getElementById("cname");
+let courseStartDateAdd = document.getElementById("cstart");
+let courseEndDateAdd = document.getElementById("cend");
+let courseRoomAdd = document.getElementById("croom");
+let professorIDAdd = document.getElementById("pnumber")
+
+// Listen for adding a new course
+addCourseButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    
+    // form validation check
+    if (!addCourseForm.checkValidity()) {
+        alert("Improper inputs for adding a course. Please follow the format.");
+        console.log(addCourseForm.reportValidity());
+        addCourseForm.find(':submit').click();
+    }
+    
+    // place courses in dictionary
+    var req = new XMLHttpRequest();
+    var data = {};
+    data.courseName = courseNameAdd.value;
+    data.courseStartDateAdd = courseStartDateAdd.value;
+    data.courseEndDateAdd = courseEndDateAdd.value;
+    data.courseRoomAdd = courseRoomAdd.value;
+    data.courseProfessor = professorIDAdd.value;
+
+    console.log(data.courseStartDateAdd);
+
+    // make  POST request to add
+    req.open("POST", "/insert-course", true);
+    req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    req.addEventListener("load", () => {
+        if (req.status >= 200 && req.status < 400) {
+            window.location.reload();
+        } else {
+            alert("Error adding course");
+        }
+    })
+   req.send(JSON.stringify(data));
+})

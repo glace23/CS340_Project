@@ -9,7 +9,6 @@ function lookUpStudent(){
 
     let search = '';
     document.getElementById("searchresults").hidden = false;
-    
 
 
     if (checkfname !== ''){
@@ -59,8 +58,6 @@ function lookUpStudent(){
    })
 
    req.send("/lookup-student?" + param);  
-
-
 }
 
 // toggle student look up form
@@ -124,7 +121,7 @@ addStudentButton.addEventListener("click", (event) => {
     // form validation check
     if (!addStudentForm.checkValidity()) {
         alert("Improper inputs. Please try again.");
-        addStudentForm.find(':submit').click()
+        addStudentForm.find(':submit').click();
     }
     
     // place students in dictionary
@@ -164,9 +161,7 @@ function updateStudent(studentID){
     document.getElementById("editphonenumber").value = studentPhoneNumber;
     document.getElementById("editstudentid").value = studentID;
     document.getElementById("updateStudent").hidden = false;
-
 }
-
 
 function saveUpdateStudent() {
    var req = new XMLHttpRequest();

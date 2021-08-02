@@ -86,8 +86,8 @@
             <td>{{roomN}}</td>
             <td>{{professorFN}}</td>
             <td>{{professorLN}}</td>
-            <td><button onclick="">Update</button></td>
-            <td><button onclick="deleteCourse({{courseID}})">Delete</button></td>
+            <td id="update"><button onclick="">Update</button></td>
+            <td style="border: 0px" id="delete"><button onclick="deleteCourse({{courseID}})">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>

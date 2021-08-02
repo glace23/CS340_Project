@@ -4,7 +4,7 @@ var app = express();
 var mysql = require('./dbcon.js');
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 
-PORT = 30342;
+PORT = 30245;
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
@@ -29,15 +29,51 @@ app.get('/',function(req,res){
   res.render('home')
 });
 
-app.get('/enrollment',function(req,res){
-  res.render('enrollment')
+
+//====================== Enrollments SQL Functions ======================
+app.get('/enrollment', function (req, res){
+  context = {};
+  select_query = "SELECT enrollmentID, CONCAT(Professors.professorFirstName, ' ', Professors.professorLastName) AS 'professor', Courses.courseName, CONCAT(Students.studentFirstName, ' ', Students.studentLastName) AS 'student', Rooms.roomNumber FROM Enrollments INNER JOIN Courses ON Courses.courseID = Enrollments.courseID INNER JOIN Professors ON Courses.professorID = Professors.professorID INNER JOIN Students ON Students.studentID = Enrollments.studentID INNER JOIN Rooms ON Courses.roomID = Rooms.roomID ORDER BY Courses.courseName;";
+  mysql.pool.query(select_query, (error, results, fields) => {
+    if (error) {
+        res.write(JSON.stringify(error));
+        res.end();
+    }
+    context.enrollments = results;
+    return res.render('enrollment', context);
+  });
 });
+
+app.post('/delete-enrollment', function (req, res, next){
+  delete_query = "DELETE FROM Enrollments WHERE enrollmentID = ?";
+  mysql.pool.query(delete_query, [req.body.id], function(err, result) {
+    if (err) {
+      next(err);
+      return;
+    }
+    res.send();
+  })
+});
+
+app.post('/insert-enrollment', function (req, res, next) {
+  insert_query = "INSERT INTO Enrollments(studentID, courseID) VALUES ((SELECT studentID FROM Students WHERE studentNumber = ?), (SELECT courseID FROM Courses WHERE courseName = ?));";
+  mysql.pool.query(insert_query, 
+    [req.body.studentIDEnroll, req.body.courseNameEnroll],
+    function(err, result) {
+      if (err) {
+        next(err);
+        return;
+      }
+      res.send();
+    })
+});
+
 
 
 //====================== Professors SQL Functions ======================
 app.get('/professor', function (req, res){
   context = {};
-  select_query = "SELECT professorID, professorFirstName, professorLastName, professorEmail, professorNumber FROM Professors;";
+  select_query = "SELECT professorID, professorFirstName, professorLastName, professorEmail, professorNumber FROM Professors ORDER BY professorFirstName;";
   mysql.pool.query(select_query, (error, results, fields) => {
     if (error) {
         res.write(JSON.stringify(error));
@@ -74,7 +110,7 @@ app.post('/insert-professor', function (req, res, next) {
 //====================== Courses SQL Functions ======================
 app.get('/course', function (req, res){
   context = {};
-  select_query = "SELECT courseID, courseName, DATE_FORMAT(courseStartDate, '%m-%d-%Y') AS startDate, DATE_FORMAT(courseEndDate, '%m-%d-%Y') AS endDate, Rooms.roomNumber AS roomN, Professors.professorFirstName AS professorFN, Professors.professorLastName AS professorLN FROM Courses LEFT JOIN Professors ON Courses.professorID = Professors.professorID LEFT JOIN Rooms ON Courses.roomID = Rooms.roomID;";
+  select_query = "SELECT courseID, courseName, DATE_FORMAT(courseStartDate, '%m-%d-%Y') AS startDate, DATE_FORMAT(courseEndDate, '%m-%d-%Y') AS endDate, Rooms.roomNumber AS roomN, Professors.professorFirstName AS professorFN, Professors.professorLastName AS professorLN FROM Courses LEFT JOIN Professors ON Courses.professorID = Professors.professorID LEFT JOIN Rooms ON Courses.roomID = Rooms.roomID ORDER BY courseName;";
   mysql.pool.query(select_query, (error, results, fields) => {
     if (error) {
         res.write(JSON.stringify(error));
@@ -113,7 +149,7 @@ app.post('/insert-course', function (req, res, next) {
 //====================== Rooms SQL Functions ======================
 app.get('/room', function (req, res){
   context = {};
-  select_query = "SELECT Rooms.roomID, roomNumber, Courses.courseName FROM Rooms LEFT JOIN Courses ON Rooms.roomID = Courses.roomID;";
+  select_query = "SELECT Rooms.roomID, roomNumber, Courses.courseName FROM Rooms LEFT JOIN Courses ON Rooms.roomID = Courses.roomID ORDER BY roomNumber;";
 
   // For search queries
   if (req.query.roomNumber != '' && req.query.courseName == '') {
@@ -160,7 +196,7 @@ app.post('/insert-room', function (req, res, next) {
 //====================== Students SQL Functions ======================
 app.get('/student', function (req, res){
   context = {};
-  select_query = "SELECT studentFirstName, studentLastName, studentEmail, studentNumber, studentPhoneNumber, studentID FROM Students";
+  select_query = "SELECT studentFirstName, studentLastName, studentEmail, studentNumber, studentPhoneNumber, studentID FROM Students ORDER BY studentFirstName";
   mysql.pool.query(select_query, (error, results, fields) => {
     if (error) {
         res.write(JSON.stringify(error));

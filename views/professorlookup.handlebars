@@ -43,7 +43,7 @@
     </div>
     <div>
         <label for="pnumber">Professor ID Number:</label>
-        <input type="text" id="pnumber" name="pnumber" placeholder="P1234567" pattern="[P]{1}[0-9]{6}" minlength="7" maxlength="7" required> 
+        <input type="text" id="pnumber" name="pnumber" placeholder="P1234567" pattern="[0-9]{5}" minlength="5" maxlength="5" required> 
     </div>
     <input type="submit" value="Add Professor" id="addProfessor">
 </form>
@@ -67,8 +67,8 @@
             <td>{{professorLastName}}</td>
             <td>{{professorEmail}}</td>
             <td>{{professorNumber}}</td>
-           <td><button onclick="">Update</button></td>
-            <td><button onclick="deleteProfessor({{professorID}})">Delete</button></td>
+            <td id="update"><button onclick="">Update</button></td>
+            <td id="delete"><button onclick="deleteProfessor({{professorID}})">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>

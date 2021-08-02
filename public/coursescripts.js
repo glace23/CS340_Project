@@ -115,8 +115,6 @@ window.onload=function() {
         data.courseRoomAdd = courseRoomAdd.value;
         data.courseProfessor = professorIDAdd.value;
 
-        console.log(data.courseStartDateAdd);
-
         // make  POST request to add
         req.open("POST", "/insert-course", true);
         req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");

@@ -67,14 +67,14 @@ INSERT INTO Professors(professorFirstName, professorLastName, professorEmail, pr
 INSERT INTO Professors(professorFirstName, professorLastName, professorEmail, professorNumber) VALUES ("Jocelyne", "Lukas", "jlukas@osu.edu", "19047"); 
 INSERT INTO Professors(professorFirstName, professorLastName, professorEmail, professorNumber) VALUES ("Rita", "Pravin", "rpravin@osu.edu", "51729"); 
 
-INSERT INTO Courses(courseName, courseStartDate, courseEndDate, roomID, professorID) VALUES ("CS340", "2021-07-01", "2021-08-15", 1, 2); 
-INSERT INTO Courses(courseName, courseStartDate, courseEndDate, roomID, professorID) VALUES ("CS161", "2021-07-01", "2021-08-15", 2, 3); 
-INSERT INTO Courses(courseName, courseStartDate, courseEndDate, roomID, professorID) VALUES ("CS162", "2021-07-01", "2021-08-15", 3, 1); 
-
 INSERT INTO Rooms(roomNumber) VALUES ("A102");
 INSERT INTO Rooms(roomNumber) VALUES ("L306");
 INSERT INTO Rooms(roomNumber) VALUES ("C441");
 INSERT INTO Rooms(roomNumber) VALUES ("D201");
+
+INSERT INTO Courses(courseName, courseStartDate, courseEndDate, roomID, professorID) VALUES ("CS340", "2021-07-01", "2021-08-15", 1, 2); 
+INSERT INTO Courses(courseName, courseStartDate, courseEndDate, roomID, professorID) VALUES ("CS161", "2021-07-01", "2021-08-15", 2, 3); 
+INSERT INTO Courses(courseName, courseStartDate, courseEndDate, roomID, professorID) VALUES ("CS162", "2021-07-01", "2021-08-15", 3, 1); 
 
 INSERT INTO Enrollments(studentID, courseID) VALUES (1, 1);
 INSERT INTO Enrollments(studentID, courseID) VALUES (1, 3);

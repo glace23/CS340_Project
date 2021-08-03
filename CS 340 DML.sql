@@ -3,7 +3,8 @@
 ======================================================================================================
 
 -- Default table for Student Lookup Page table
-SELECT studentFirstName, studentLastName, studentEmail, studentNumber, studentPhoneNumber FROM Students;
+SELECT studentFirstName, studentLastName, studentEmail, studentNumber, studentPhoneNumber, studentID FROM Students 
+ORDER BY studentFirstName;
 
 -- Add a new student, the :variable indicates the inputted variable
 INSERT INTO Students(studentFirstName, studentLastName, studentEmail, studentNumber, studentPhoneNumber) VALUES (:fnameInput, :lnameInput, :emailInput, :numberInput, :phoneNumberInput);
@@ -23,10 +24,10 @@ WHERE studentFirstName = :fnameInput, studentLastName = :lnameInput, studentEmai
 ======================================================================================================
 
 -- Default table for ProfessorLookup Page table
-SELECT professorFirstName, professorLastName, professorEmail, professorNumber FROM Professors;
+SELECT professorID, professorFirstName, professorLastName, professorEmail, professorNumber FROM Professors ORDER BY professorFirstName;
 
 -- Add a new professor, the :variable indicates the inputted variable
-INSERT INTO Professors (professorFirstName, professorLastName, professorEmail, professorNumber) VALUES (:fnameInput, :lnameInput, :emailInput, :numberInput);
+INSERT INTO Professors(professorFirstName, professorLastName, professorEmail, professorNumber) VALUES (:fnameInput, :lnameInput, :emailInput, :numberInput);
 
 -- Update a professor's data
 UPDATE Professors SET professorFirstName = :fnameInput, professorLastName = :lnameInput, professorEmail = :emailInput, professorNumber = :numberInput WHERE professorNumber = :numberInput;
@@ -43,13 +44,14 @@ WHERE professorFirstName = :fnameInput, professorLastName = :lnameInput, profess
 ======================================================================================================
 
 -- Default table for Course Lookup Page table
-SELECT courseName, courseStartDate, courseEndDate, Rooms.roomNumber, Professors.professorFirstName, Professors.professorLastName 
-FROM Courses 
-INNER JOIN Professors ON Courses.professorID = Professors.professorID 
-INNER JOIN Rooms ON Courses.roomID = Rooms.roomID;
+SELECT courseID, courseName, DATE_FORMAT(courseStartDate, '%m-%d-%Y') AS startDate, DATE_FORMAT(courseEndDate, '%m-%d-%Y') AS endDate, Rooms.roomNumber AS roomN, Professors.professorFirstName AS professorFN, Professors.professorLastName AS professorLN FROM Courses 
+LEFT JOIN Professors ON Courses.professorID = Professors.professorID 
+LEFT JOIN Rooms ON Courses.roomID = Rooms.roomID 
+ORDER BY courseName;
+
 
 -- Add a new course, the :variable indicates the inputted variable
-INSERT INTO Courses(courseName, courseStartDate, courseEndDate) VALUES (:nameInput,:startDateInput, :endDateInput);
+INSERT INTO Courses(courseName, courseStartDate, courseEndDate, roomID, professorID) VALUES (:courseNameInput,:startDateInput, :endDateInput, (SELECT roomID FROM Rooms WHERE roomNumber = :roomNumberInput), (SELECT professorID FROM Professors WHERE professorNumber = :professorNumberInput));
 
 -- Update a courses's data
 UPDATE Courses SET courseName = :nameInput, courseStartDate = :startDateInput, courseEndDate = :endDateInput WHERE courseName = :courseNameInput;
@@ -69,8 +71,9 @@ WHERE Courses.courseName = :nameInput, Courses.courseStartDate = :startDateInput
 ======================================================================================================
 
 -- Default table look up for Rooms
-SELECT roomNumber, Courses.courseName FROM Rooms
-INNER JOIN Courses ON Rooms.roomID = Courses.roomID;
+SELECT Rooms.roomID, roomNumber, Courses.courseName FROM Rooms 
+LEFT JOIN Courses ON Rooms.roomID = Courses.roomID 
+ORDER BY roomNumber;
 
 -- Add a new room, the :variable indicates the inputted variable
 INSERT INTO Rooms(roomNumber) VALUES (:roomNumberInput);
@@ -83,8 +86,8 @@ DELETE FROM Rooms WHERE roomNumber = :roomNumberInput;
 
 -- Search for a room
 SELECT roomNumber, Courses.courseName FROM Rooms
-INNER JOIN Courses ON Rooms.roomID = Courses.roomID
-WHERE Rooms.roomNumberInput = :roomNumberInput, Courses.courseName = :courseNameInput;
+LEFT JOIN Courses ON Rooms.roomID = Courses.roomID
+WHERE Rooms.roomNumber = :roomNumberInput AND Courses.courseName = :courseNameInput;
 
 ======================================================================================================
 -- Enrollments
@@ -107,26 +110,38 @@ VALUES ((SELECT studentID FROM Students WHERE studentNumber = :studentNumber),
 -- Delete an enrollment
 DELETE FROM Enrollments WHERE enrollmentID = :enrollmentID;
 
-
-
+-- Update an enrollment
+UPDATE Enrollments SET studentID = (SELECT studentID FROM Students WHERE studentNumber = :studentNumber), 
+courseID =  (SELECT courseID FROM Courses WHERE courseName = :courseName) 
+WHERE enrollmentID = :enrollmentIDInput;
 
 -- Look up a student's courses by ID number
-SELECT studentFirstName, studentLastName, studentEmail, studentNumber, Courses.courseName FROM Students
-INNER JOIN Enrollments ON Students.studentID = Enrollments.studentID
-INNER JOIN Courses on Courses.courseID = Enrollments.courseID
-WHERE Students.studentNumber = :studentNumberInput;
+SELECT enrollmentID, CONCAT(Professors.professorFirstName, ' ', Professors.professorLastName) AS 'professor', 
+Courses.courseName, CONCAT(Students.studentFirstName, ' ', Students.studentLastName) AS 'student', Rooms.roomNumber FROM Enrollments
+INNER JOIN Courses ON Courses.courseID = Enrollments.courseID 
+INNER JOIN Professors ON Courses.professorID = Professors.professorID 
+INNER JOIN Students ON Students.studentID = Enrollments.studentID 
+INNER JOIN Rooms ON Courses.roomID = Rooms.roomID 
+WHERE Students.studentNumber = :studentNumberInput
+ORDER BY Courses.courseName;
 
 
 -- Search for all courses and students taught by a professor by professor ID number
-SELECT professorFirstName, professorLastName, Courses.courseName, Students.studentFirstName, Students.studentLastName FROM Professors
-INNER JOIN Courses ON Courses.professorID = Professors.professorID
-INNER JOIN Enrollments ON Enrollments.courseID = Courses.courseID
-INNER JOIN Students ON Students.studentID = Enrollments.studentID
-WHERE Professors.professorNumber = :professorNumberInput;
-
+SELECT enrollmentID, CONCAT(Professors.professorFirstName, ' ', Professors.professorLastName) AS 'professor', 
+Courses.courseName, CONCAT(Students.studentFirstName, ' ', Students.studentLastName) AS 'student', Rooms.roomNumber FROM Enrollments 
+INNER JOIN Courses ON Courses.courseID = Enrollments.courseID 
+INNER JOIN Professors ON Courses.professorID = Professors.professorID 
+INNER JOIN Students ON Students.studentID = Enrollments.studentID 
+INNER JOIN Rooms ON Courses.roomID = Rooms.roomID 
+WHERE Professors.professorNumber = :professorNumberInput
+ORDER BY Courses.courseName;
 
 -- Search for all students taking a course by course name and start date
-SELECT courseName, courseStartDate, CONCAT(Students.studentFirstName, ' ', Students.studentLastName) AS student FROM Courses
-INNER JOIN Enrollments ON Enrollments.courseID = Courses.courseID
-INNER JOIN Students ON Students.studentID = Enrollments.studentID
-WHERE Courses.courseName = :inputName AND Courses.courseStartDate = :inputDate;
+SELECT enrollmentID, CONCAT(Professors.professorFirstName, ' ', Professors.professorLastName) AS 'professor', 
+Courses.courseName, CONCAT(Students.studentFirstName, ' ', Students.studentLastName) AS 'student', Rooms.roomNumber FROM Enrollments 
+INNER JOIN Courses ON Courses.courseID = Enrollments.courseID 
+INNER JOIN Professors ON Courses.professorID = Professors.professorID 
+INNER JOIN Students ON Students.studentID = Enrollments.studentID 
+INNER JOIN Rooms ON Courses.roomID = Rooms.roomID 
+WHERE Courses.courseName = :inputName AND Courses.courseStartDate = :inputDate
+ORDER BY Students.studentFirstName;

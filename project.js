@@ -170,21 +170,37 @@ app.post('/update-course', function (req, res, next){
   select_professor_query = "SELECT * FROM Professors WHERE professorNumber = ?";
   update_query = "UPDATE Courses SET courseStartDate = ?, courseEndDate = ?, roomID = ?, professorID = ? WHERE courseID = ?";
 
-  // Nest query, get room id first NEED error checking for empty id
+  // Nest query, get room id first 
   mysql.pool.query(select_room_query, [req.body.roomNumber], (err, results) => {
     if (err) {
       next(err);
       return;
     }
-    context.roomID = results[0].roomID;
 
-    // professor id second NEED error checking for empty id
+    // Error check if the query returned a valid value
+    if (results[0] != undefined){
+      context.roomID = results[0].roomID;
+    }
+    // If invalid, set id to null
+    else{
+      context.roomID = null;
+    }
+
+    // professor id second
     mysql.pool.query(select_professor_query, [req.body.professorNumber], (err, results) => {
     if (err) {
       next(err);
       return;
     }
-    context.professorID = results[0].professorID;
+
+    // Error check if the query returned a valid value
+    if (results[0] != undefined){
+      context.professorID = results[0].professorID;
+    }
+    // If invalid, set id to null
+    else{
+      context.professorID = null;
+    }
 
       // finally insert into db
       mysql.pool.query(update_query, [req.body.startDate, req.body.endDate, context.roomID, context.professorID, req.body.id], 
@@ -253,16 +269,64 @@ app.post('/insert-room', function (req, res, next) {
 //====================== Students SQL Functions ======================
 app.get('/student', function (req, res){
   context = {};
-  select_query = "SELECT studentFirstName, studentLastName, studentEmail, studentNumber, studentPhoneNumber, studentID FROM Students ORDER BY studentFirstName";
+  let select_query;
+  if (Object.keys(req.query).length === 0){
+    select_query = "SELECT studentFirstName, studentLastName, studentEmail, studentNumber, studentPhoneNumber, studentID FROM Students";
+  }
+  else
+  {
+    let where_query = " WHERE "
+    if (req.query.studentfname !== ''){
+      where_query = where_query + `studentFirstName LIKE "${req.query.studentfname}%" OR `;
+    }
+    if (req.query.studentlname !== ''){
+      where_query = where_query + `studentLastName LIKE "${req.query.studentlname}%" OR `;
+    }
+    if (req.query.studentemail !== ''){
+      where_query = where_query + `studentEmail LIKE "${req.query.studentemail}%" OR `;
+    }
+    if (req.query.studentnumber !== ''){
+      where_query = where_query + `studentNumber LIKE "${req.query.studentnumber}%" OR `;
+    }
+    if (req.query.studentphonenumber !== ''){
+      where_query = where_query + `studentPhoneNumber LIKE "${req.query.studentphonenumber}%" OR `;
+    }
+    select_query = "SELECT studentFirstName, studentLastName, studentEmail, studentNumber, studentPhoneNumber, studentID FROM Students" + where_query.substring(0, where_query.length-3);
+  }
+
   mysql.pool.query(select_query, (error, results, fields) => {
+    if (error) {
+        console.log("error");
+        res.write(JSON.stringify(error));
+        res.end();
+        return;
+    }
+    
+    context.students = results;
+    return res.render('studentlookup', context);
+  });
+
+});
+
+app.get('/student-lookup', function (req, res){
+  context = {};
+  console.log(req.query);
+  console.log(req.query.studentFirstName)
+  select_query = "SELECT studentFirstName, studentLastName, studentEmail, studentNumber, studentPhoneNumber, studentID FROM Students " +
+                 "WHERE studentFirstName ?, studentLastName ?, studentEmail ?, studentNumber ?, studentPhoneNumber ?";
+  
+  mysql.pool.query(select_query, [req.query.studentFirstName, req.query.studentLastName, req.query.studentEmail, req.query.studentNumber, req.query.studentPhoneNumber],
+    (error, results) => {
     if (error) {
         res.write(JSON.stringify(error));
         res.end();
     }
-    context.students = results;
-    return res.render('studentlookup', context);
+    
+    context.studentSearch = results;
+    res.render('slookup', context);
   });
 });
+
 
 app.post('/delete-student', function (req, res, next){
   delete_query = "DELETE FROM Students WHERE studentID = ?;";

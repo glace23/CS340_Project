@@ -3,7 +3,7 @@
 <button onclick="showStudentLookup()">Look for Student</button><button onclick="showStudentAdd()">Add Student</button>
 
 <div id="student-lookup" hidden>
-    <form>
+    <form method="GET" action="/student">
         <h3>Look for Student:</h3>
         <p>Search for the fields you would like to, all fields are optional.</p>
         
@@ -21,14 +21,15 @@
         </div>
         <div class="student-form">
             <label for="student number">Student ID Number: </label>
-            <input type="text" name="studentnumber" id="studentnumber" value="" pattern="[0-9]{6}" minlength="6" maxlength="6">
+            <input type="text" name="studentnumber" id="studentnumber" value="" pattern="[0-9]" maxlength="6">
         </div>
         <div class="student-form">
             <label for="student name">Student Phone Number: </label>
-            <input type="text" name="studentphonenumber" id="studentphonenumber" maxlength="10" value="" pattern="[0-9]{10}" minlength="10" maxlength="10">
+            <input type="text" name="studentphonenumber" id="studentphonenumber" maxlength="10" value="" pattern="[0-9]" maxlength="10">
         </div>
+        <input type="submit">
     </form>
-    <button onclick="lookUpStudent()">Search</button>
+    
 </div>
 
 <form id="student-add" hidden>
@@ -57,9 +58,10 @@
   <input type="submit" value="Add New Student" id="addStudent">
 </form>
 
+<br>
+<br>
+
 <div>
-<br>
-<br>
 <table>
     <thead>
         <tr>
@@ -68,6 +70,7 @@
             <th>Student Email</th>
             <th>Student ID Number</th>
             <th>Student Phone Number</th>
+            <th colspan="2"><a href='/student'><button>Reset</button></a></th>
         
     </thead>
     <tbody>
@@ -85,6 +88,7 @@
     </tbody>
 </table>
 </div>
+
 <br>
 
 <div id="updateStudent" hidden>

@@ -1,67 +1,67 @@
-function lookUpStudent(){
-    var req = new XMLHttpRequest();
+// function lookUpStudent(){
+//     var req = new XMLHttpRequest();
 
-    let checkfname = document.getElementById("studentfname").value;
-    let checklname = document.getElementById("studentlname").value;
-    let checkemail = document.getElementById("studentemail").value;
-    let checknumber = document.getElementById("studentnumber").value;
-    let checkphonenumber = document.getElementById("studentphonenumber").value;
+//     let checkfname = document.getElementById("studentfname").value;
+//     let checklname = document.getElementById("studentlname").value;
+//     let checkemail = document.getElementById("studentemail").value;
+//     let checknumber = document.getElementById("studentnumber").value;
+//     let checkphonenumber = document.getElementById("studentphonenumber").value;
 
-    let search = '';
-    document.getElementById("searchresults").hidden = false;
+//     let search = '';
+//     document.getElementById("searchresults").hidden = false;
     
 
 
-    if (checkfname !== ''){
-        search = search.concat(" First name:");
-        search = search.concat(checkfname);
+//     if (checkfname !== ''){
+//         search = search.concat(" First name:");
+//         search = search.concat(checkfname);
         
-    }
-    if (checklname !== ''){
-        search = search.concat(" Last name:");
-        search = search.concat(checklname);
+//     }
+//     if (checklname !== ''){
+//         search = search.concat(" Last name:");
+//         search = search.concat(checklname);
         
-    }
-    if (checkemail !== ''){
-        search = search.concat(" Email:");
-        search = search.concat(checkemail);
+//     }
+//     if (checkemail !== ''){
+//         search = search.concat(" Email:");
+//         search = search.concat(checkemail);
         
-    }
-    if (checknumber !== ''){
-        search = search.concat(" Number:");
-        search = search.concat(checknumber);
+//     }
+//     if (checknumber !== ''){
+//         search = search.concat(" Number:");
+//         search = search.concat(checknumber);
         
-    }
-    if (checkphonenumber !== ''){
-        search = search.concat(" Phone Number:");
-        search = search.concat(checkphonenumber);
+//     }
+//     if (checkphonenumber !== ''){
+//         search = search.concat(" Phone Number:");
+//         search = search.concat(checkphonenumber);
         
-    }
-    if (search === ''){
-        search = "All fields were left blank";
-        document.getElementById("searchvalue").innerHTML = search;
-    }
-    else{
-        document.getElementById("searchvalue").innerHTML = search;
-    }
+//     }
+//     if (search === ''){
+//         search = "All fields were left blank";
+//         document.getElementById("searchvalue").innerHTML = search;
+//     }
+//     else{
+//         document.getElementById("searchvalue").innerHTML = search;
+//     }
 
 
-    var param = "&studentFirstName=" + checkfname + "&studentFirstName="+ checklname + "&studentEmail="+ checkemail + "&studentNumber=" + checknumber + "&studentPhoneNumber=" + checkphonenumber;
-    alert("/lookup-student?" + param);
-    req.open("GET", "/lookup-student?" + param, true);
-    req.setRequestHeader("Content-Type", 'application/x-www-form-urlencoded');
-    req.addEventListener("load", () => {
-       if (req.status >= 200 && req.status < 400) {
-           window.location.reload();
-       } else {
-           console.log("ERROR");
-       }
-   })
+//     var param = "&studentFirstName=" + checkfname + "&studentFirstName="+ checklname + "&studentEmail="+ checkemail + "&studentNumber=" + checknumber + "&studentPhoneNumber=" + checkphonenumber;
+//     alert("/lookup-student?" + param);
+//     req.open("GET", "/lookup-student?" + param, true);
+//     req.setRequestHeader("Content-Type", 'application/x-www-form-urlencoded');
+//     req.addEventListener("load", () => {
+//        if (req.status >= 200 && req.status < 400) {
+//            window.location.reload();
+//        } else {
+//            console.log("ERROR");
+//        }
+//    })
 
-   req.send("/lookup-student?" + param);  
+//    req.send("/lookup-student?" + param);  
 
 
-}
+// }
 
 // toggle student look up form
 function showStudentLookup(){

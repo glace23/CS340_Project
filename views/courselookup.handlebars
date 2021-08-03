@@ -79,17 +79,44 @@
     </thead>
     <tbody>
         {{#each courses}}
-        <tr>
+        <tr id="course{{courseID}}">
             <td>{{courseName}}</td>
             <td>{{startDate}}</td>
             <td>{{endDate}}</td>
             <td>{{roomN}}</td>
             <td>{{professorFN}}</td>
             <td>{{professorLN}}</td>
-            <td id="update"><button onclick="">Update</button></td>
+            <td id="update"><button onclick="updateCourse({{courseID}}, {{professorNumber}})">Update</button></td>
             <td style="border: 0px" id="delete"><button onclick="deleteCourse({{courseID}})">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
 </table>
 <br>
+
+<div id="updateCourse">
+    <h2>Update Course</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Course Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Room Number</th>
+                <th>Professor Number</th>
+            </tr>
+            
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" id="editName" name="cname" pattern="[A-Za-z]{2}[0-9]{3}" maxlength="5"></input></td>
+                <td><input type="date" id="editStart" name="cstart" required></input></td>
+                <td><input type="date" id="editEnd" name="cend" required></input></td>
+                <td><input type="text" id="editRoomNumber" name="croom" pattern="[A-Z]{1}[0-9]{3}" maxlength="4"></input></td>
+                <td><input type="text" id="editProfessorNumber" name="cnumber" pattern="[0-9]{5}" minlength="5" maxlength="5"></input></td>
+                <td><input type="text" id="editcid" disabled></input></td>
+                <td><button onclick="saveUpdateCourse()">Save</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

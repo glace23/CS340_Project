@@ -128,3 +128,45 @@ window.onload=function() {
     req.send(JSON.stringify(data));
     });
 }
+
+
+function updateCourse(courseID, professorNumber){
+    let course = document.getElementById("course" + courseID);
+    let courseName = course.cells[0].innerHTML;
+    let courseStartDate = course.cells[1].innerHTML;
+    let courseEndDate = course.cells[2].innerHTML;
+    let roomNumber = course.cells[3].innerHTML;
+    document.getElementById("editName").value = courseName;
+    document.getElementById("editStart").value = courseStartDate;
+    document.getElementById("editEnd").value = courseEndDate;
+    document.getElementById("editRoomNumber").value = roomNumber;
+    document.getElementById("editProfessorNumber").value = professorNumber;
+    document.getElementById("editcid").value = courseID;
+    document.getElementById("updateCourse").hidden = false;
+
+}
+
+
+function saveUpdateCourse() {
+   var req = new XMLHttpRequest();
+   var data = {};
+    data.courseName = document.getElementById("editName").value;
+    data.startDate = document.getElementById("editStart").value;
+    data.endDate = document.getElementById("editEnd").value;
+    data.roomNumber = document.getElementById("editRoomNumber").value;
+    data.professorNumber = document.getElementById("editProfessorNumber").value;
+    data.id = document.getElementById("editcid").value;
+   
+   req.open("POST", "/update-course", true);
+   req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+   req.addEventListener("load", () => {
+       if (req.status >= 200 && req.status < 400) {
+           window.location.reload();
+       } else {
+           console.log("ERROR");
+       }
+   })
+
+   req.send(JSON.stringify(data));
+   document.getElementById("updateCourse").hidden = true;
+}

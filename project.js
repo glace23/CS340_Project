@@ -106,11 +106,24 @@ app.post('/insert-professor', function (req, res, next) {
     })
 });
 
+app.post('/update-professor', function (req, res, next){
+  update_query = "UPDATE Professors SET professorFirstName = ?, professorLastName = ?, professorEmail = ? WHERE professorID = ?";
+  mysql.pool.query(update_query, [req.body.professorFirstName, req.body.professorLastName, req.body.professorEmail, req.body.id], 
+    function(err, result) {
+    if (err) {
+      next(err);
+      return
+    }
+    res.send();
+  })
+});
+
+
 
 //====================== Courses SQL Functions ======================
 app.get('/course', function (req, res){
   context = {};
-  select_query = "SELECT courseID, courseName, DATE_FORMAT(courseStartDate, '%m-%d-%Y') AS startDate, DATE_FORMAT(courseEndDate, '%m-%d-%Y') AS endDate, Rooms.roomNumber AS roomN, Professors.professorFirstName AS professorFN, Professors.professorLastName AS professorLN FROM Courses LEFT JOIN Professors ON Courses.professorID = Professors.professorID LEFT JOIN Rooms ON Courses.roomID = Rooms.roomID ORDER BY courseName;";
+  select_query = "SELECT courseID, courseName, DATE_FORMAT(courseStartDate, '%Y-%m-%d') AS startDate, DATE_FORMAT(courseEndDate, '%Y-%m-%d') AS endDate, Rooms.roomNumber AS roomN, Professors.professorNumber, Professors.professorFirstName AS professorFN, Professors.professorLastName AS professorLN FROM Courses LEFT JOIN Professors ON Courses.professorID = Professors.professorID LEFT JOIN Rooms ON Courses.roomID = Rooms.roomID ORDER BY courseName;";
   mysql.pool.query(select_query, (error, results, fields) => {
     if (error) {
         res.write(JSON.stringify(error));
@@ -143,6 +156,50 @@ app.post('/insert-course', function (req, res, next) {
       }
       res.send();
     })
+});
+
+
+
+
+
+
+app.post('/update-course', function (req, res, next){
+  context = {};
+
+  select_room_query = "SELECT * FROM Rooms WHERE roomNumber = ?";
+  select_professor_query = "SELECT * FROM Professors WHERE professorNumber = ?";
+  update_query = "UPDATE Courses SET courseStartDate = ?, courseEndDate = ?, roomID = ?, professorID = ? WHERE courseID = ?";
+
+  // Nest query, get room id first NEED error checking for empty id
+  mysql.pool.query(select_room_query, [req.body.roomNumber], (err, results) => {
+    if (err) {
+      next(err);
+      return;
+    }
+    context.roomID = results[0].roomID;
+
+    // professor id second NEED error checking for empty id
+    mysql.pool.query(select_professor_query, [req.body.professorNumber], (err, results) => {
+    if (err) {
+      next(err);
+      return;
+    }
+    context.professorID = results[0].professorID;
+
+      // finally insert into db
+      mysql.pool.query(update_query, [req.body.startDate, req.body.endDate, context.roomID, context.professorID, req.body.id], 
+        function(err, result) {
+          if (err) {
+          next(err);
+          return
+          }
+
+
+        res.send();
+      });
+    });
+  });
+
 });
 
 
@@ -191,6 +248,8 @@ app.post('/insert-room', function (req, res, next) {
       res.send();
     })
 });
+
+
 
 
 //====================== Students SQL Functions ======================
@@ -242,23 +301,6 @@ app.post('/update-student', function (req, res, next){
     res.send();
   })
 });
-
-
-app.get('/lookup-student', function (req, res){
-  context = {};
-  select_query = "SELECT * FROM Students WHERE studentFirstName = ?";
-  console.log = req.query;
-  mysql.pool.query(select_query, [req.query.studentFirstName], 
-    (error, results, fields) => {
-    if (error) {
-        res.write(JSON.stringify(error));
-        res.end();
-    }
-    context.lookup = results;
-    res.render('slookup', context);
-  });
-});
-
 
 
 app.use(function(req,res){

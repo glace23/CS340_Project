@@ -116,3 +116,42 @@ window.onload=function() {
     req.send(JSON.stringify(data));
     });
 }
+
+
+function updateProfessor(professorID){
+    let professor = document.getElementById("professor" + professorID);
+    let professorFirstName = professor.cells[0].innerHTML;
+    let professorLastName = professor.cells[1].innerHTML;
+    let professorEmail = professor.cells[2].innerHTML;
+    let professorNumber = professor.cells[3].innerHTML;
+    document.getElementById("editfname").value = professorFirstName;
+    document.getElementById("editlname").value = professorLastName;
+    document.getElementById("editemail").value = professorEmail;
+    document.getElementById("editnumber").value = professorNumber;
+    document.getElementById("editProfessorid").value = professorID;
+    document.getElementById("updateProfessor").hidden = false;
+
+}
+
+
+function saveUpdateProfessor() {
+   var req = new XMLHttpRequest();
+   var data = {};
+   data.professorFirstName = document.getElementById("editfname").value;
+   data.professorLastName = document.getElementById("editlname").value;
+   data.professorEmail = document.getElementById("editemail").value;
+   data.id = document.getElementById("editProfessorid").value;
+   
+   req.open("POST", "/update-professor", true);
+   req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+   req.addEventListener("load", () => {
+       if (req.status >= 200 && req.status < 400) {
+           window.location.reload();
+       } else {
+           console.log("ERROR");
+       }
+   })
+
+   req.send(JSON.stringify(data));
+   document.getElementById("updateProfessor").hidden = true;
+}

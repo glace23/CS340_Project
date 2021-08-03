@@ -57,36 +57,6 @@
   <input type="submit" value="Add New Student" id="addStudent">
 </form>
 
-<div id="searchresults" hidden>
-    <p id ="searchvalue"></p>
-    <table>
-        <thead>
-            <tr>
-                <th>Student First Name</th>
-                <th>Student Last Name</th>
-                <th>Student Email</th>
-                <th>Student ID Number</th>
-                <th>Student Phone Number</th>
-                <th>Student Table ID</th>
-            
-        </thead>
-        <tbody>
-            {{#each students}}
-            <tr id="student{{studentID}}">
-                <td>{{studentFirstName}}</td>
-                <td>{{studentLastName}}</td>
-                <td>{{studentEmail}}</td>
-                <td>{{studentNumber}}</td>
-                <td>{{studentPhoneNumber}}</td>
-                <td>{{studentID}}</td>
-                <td><button value={{studentID}} onclick="updateStudent({{studentID}})">Update</button></td>
-                <td><button value={{studentID}} onclick="deleteStudent({{studentID}})">Delete</button></td>
-            </tr>
-            {{/each}}
-        </tbody>
-    </table>
-</div>
-
 <div>
 <br>
 <br>
@@ -110,8 +80,8 @@
             <td>{{studentNumber}}</td>
             <td>{{studentPhoneNumber}}</td>
             <td>{{studentID}}</td>
-            <td id="update"><button value={{studentID}} onclick="updateStudent({{studentID}})">Update</button></td>
-            <td id="delete" ><button value={{studentID}} onclick="deleteStudent({{studentID}})">Delete</button></td>
+            <td><button value={{studentID}} onclick="updateStudent({{studentID}})">Update</button></td>
+            <td><button value={{studentID}} onclick="deleteStudent({{studentID}})">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>

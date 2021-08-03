@@ -62,15 +62,41 @@
     </thead>
     <tbody>
         {{#each professors}}
-        <tr>
+        <tr id="professor{{professorID}}">
             <td>{{professorFirstName}}</td>
             <td>{{professorLastName}}</td>
             <td>{{professorEmail}}</td>
             <td>{{professorNumber}}</td>
-            <td id="update"><button onclick="">Update</button></td>
+            <td id="update"><button onclick="updateProfessor({{professorID}})">Update</button></td>
             <td id="delete"><button onclick="deleteProfessor({{professorID}})">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+</div>
+
+
+<div id="updateProfessor" hidden>
+    <h2>Update Professor</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Professor First Name</th>
+                <th>Professor Last Name</th>
+                <th>Professor Email</th>
+                <th>Professor ID Number</th>
+            </tr>
+            
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" id="editfname" value="" pattern="[A-Za-z]+""></input></td>    
+                <td><input type="text" id="editlname" value="" pattern="[A-Za-z]+""></input></td> 
+                <td><input type="text" id="editemail" value=""></input></td>    
+                <td><input type="text" id="editnumber" value="" disabled></input></td>  
+                <td><input type="text" id="editProfessorid" value="" disabled hidden></input></td> 
+                <td><button onclick="saveUpdateProfessor()">Save</button></td>
+            </tr>
+        </tbody>
+    </table>
 </div>

@@ -118,38 +118,37 @@ let studentNumberAdd = document.getElementById("snumber");
 let studentPhoneNumberAdd = document.getElementById("sphone");
 
 // Listen for adding a new student
-window.onload=function() {
-    addStudentButton.addEventListener("click", (event) => {
-        event.preventDefault();
+addStudentButton.addEventListener("click", (event) => {
+    event.preventDefault();
 
-        // form validation check
-        if (!addStudentForm.checkValidity()) {
-            alert("Improper inputs. Please try again.");
-            addStudentForm.find(':submit').click();
+    // form validation check
+    if (!addStudentForm.checkValidity()) {
+        alert("Improper inputs. Please try again.");
+        addStudentForm.find(':submit').click();
+    }
+    
+    // place students in dictionary
+    var req = new XMLHttpRequest();
+    var data = {};
+    data.studentFirstName = studentFirstNameAdd.value;
+    data.studentLastName = studentLastNameAdd.value;
+    data.studentEmail = studentEmailAdd.value;
+    data.studentNumber = studentNumberAdd.value;
+    data.studentPhoneNumber = studentPhoneNumberAdd.value;
+
+    // make  POST request to add
+    req.open("POST", "/insert-student", true);
+    req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    req.addEventListener("load", () => {
+        if (req.status >= 200 && req.status < 400) {
+            window.location.reload();
+        } else {
+            alert("Error adding student");
         }
-        
-        // place students in dictionary
-        var req = new XMLHttpRequest();
-        var data = {};
-        data.studentFirstName = studentFirstNameAdd.value;
-        data.studentLastName = studentLastNameAdd.value;
-        data.studentEmail = studentEmailAdd.value;
-        data.studentNumber = studentNumberAdd.value;
-        data.studentPhoneNumber = studentPhoneNumberAdd.value;
+    })
+req.send(JSON.stringify(data));
+});
 
-        // make  POST request to add
-        req.open("POST", "/insert-student", true);
-        req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        req.addEventListener("load", () => {
-            if (req.status >= 200 && req.status < 400) {
-                window.location.reload();
-            } else {
-                alert("Error adding student");
-            }
-        })
-    req.send(JSON.stringify(data));
-    });
-}
 
 function updateStudent(studentID){
     let student = document.getElementById("student" + studentID);

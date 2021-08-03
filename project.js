@@ -250,8 +250,6 @@ app.post('/insert-room', function (req, res, next) {
 });
 
 
-
-
 //====================== Students SQL Functions ======================
 app.get('/student', function (req, res){
   context = {};

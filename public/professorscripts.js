@@ -85,37 +85,36 @@ let professorEmailAdd = document.getElementById("pemail");
 let professorNumberAdd = document.getElementById("pnumber");
 
 // Listen for adding a new professor
-window.onload=function() {
-    addprofessorButton.addEventListener("click", (event) => {
-        event.preventDefault();
+addprofessorButton.addEventListener("click", (event) => {
+    event.preventDefault();
 
-        // form validation check
-        if (!addProfessorForm.checkValidity()) {
-            alert("Improper inputs. Please try again.");
-            addProfessorForm.find(':submit').click()
+    // form validation check
+    if (!addProfessorForm.checkValidity()) {
+        alert("Improper inputs. Please try again.");
+        addProfessorForm.find(':submit').click()
+    }
+    
+    // place professors in dictionary
+    var req = new XMLHttpRequest();
+    var data = {};
+    data.professorFirstName = professorFirstNameAdd.value;
+    data.professorLastName = professorLastNameAdd.value;
+    data.professorEmail = professorEmailAdd.value;
+    data.professorNumber = professorNumberAdd.value;
+
+    // make  POST request to add
+    req.open("POST", "/insert-professor", true);
+    req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    req.addEventListener("load", () => {
+        if (req.status >= 200 && req.status < 400) {
+            window.location.reload();
+        } else {
+            alert("Error adding professor");
         }
-        
-        // place professors in dictionary
-        var req = new XMLHttpRequest();
-        var data = {};
-        data.professorFirstName = professorFirstNameAdd.value;
-        data.professorLastName = professorLastNameAdd.value;
-        data.professorEmail = professorEmailAdd.value;
-        data.professorNumber = professorNumberAdd.value;
+    })
+req.send(JSON.stringify(data));
+});
 
-        // make  POST request to add
-        req.open("POST", "/insert-professor", true);
-        req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        req.addEventListener("load", () => {
-            if (req.status >= 200 && req.status < 400) {
-                window.location.reload();
-            } else {
-                alert("Error adding professor");
-            }
-        })
-    req.send(JSON.stringify(data));
-    });
-}
 
 
 function updateProfessor(professorID){

@@ -9,12 +9,12 @@ CREATE TABLE Students(
     PRIMARY KEY(studentID)
     );
 
- DROP TABLE IF EXISTS Rooms;
- CREATE TABLE Rooms(
-     roomID INT(11) AUTO_INCREMENT UNIQUE NOT NULL,
-     roomNumber VARCHAR(255) UNIQUE NOT NULL,
-     PRIMARY KEY(roomID)
-     );
+DROP TABLE IF EXISTS Rooms;
+CREATE TABLE Rooms(
+    roomID INT(11) AUTO_INCREMENT UNIQUE NOT NULL,
+    roomNumber VARCHAR(255) UNIQUE NOT NULL,
+    PRIMARY KEY(roomID)
+    );
 
 DROP TABLE IF EXISTS Professors;
 CREATE TABLE Professors(
@@ -43,8 +43,8 @@ CREATE TABLE Courses(
  DROP TABLE IF EXISTS Enrollments;
  CREATE TABLE Enrollments(
      enrollmentID INT(11) AUTO_INCREMENT UNIQUE NOT NULL,
-     studentID INT(255),
-     courseID INT(255),
+     studentID INT(11),
+     courseID INT(11),
      PRIMARY KEY(enrollmentID),
      FOREIGN KEY(studentID) REFERENCES Students(studentID),
      FOREIGN KEY(courseID) REFERENCES Courses(courseID)

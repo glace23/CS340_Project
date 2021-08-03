@@ -36,7 +36,8 @@ CREATE TABLE Courses(
     professorID INT(11),
     PRIMARY KEY(courseID),
     FOREIGN KEY(roomID) REFERENCES Rooms(roomID),
-	FOREIGN KEY(professorID) REFERENCES Professors(professorID)
+	FOREIGN KEY(professorID) REFERENCES Professors(professorID),
+	CONSTRAINT course_key UNIQUE (courseName, courseStartDate)
     );
     
      

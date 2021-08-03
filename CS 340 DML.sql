@@ -87,8 +87,28 @@ INNER JOIN Courses ON Rooms.roomID = Courses.roomID
 WHERE Rooms.roomNumberInput = :roomNumberInput, Courses.courseName = :courseNameInput;
 
 ======================================================================================================
--- Registration Look up
+-- Enrollments
 ======================================================================================================
+
+-- Default table look up for Enrollments
+SELECT enrollmentID, CONCAT(Professors.professorFirstName, ' ', Professors.professorLastName) AS 'professor', 
+Courses.courseName, CONCAT(Students.studentFirstName, ' ', Students.studentLastName) AS 'student', Rooms.roomNumber FROM Enrollments 
+INNER JOIN Courses ON Courses.courseID = Enrollments.courseID 
+INNER JOIN Professors ON Courses.professorID = Professors.professorID 
+INNER JOIN Students ON Students.studentID = Enrollments.studentID 
+INNER JOIN Rooms ON Courses.roomID = Rooms.roomID 
+ORDER BY Courses.courseName;
+
+-- Add a new enrollment
+INSERT INTO Enrollments(studentID, courseID) 
+VALUES ((SELECT studentID FROM Students WHERE studentNumber = :studentNumber), 
+(SELECT courseID FROM Courses WHERE courseName = :courseName));
+
+-- Delete an enrollment
+DELETE FROM Enrollments WHERE enrollmentID = :enrollmentID;
+
+
+
 
 -- Look up a student's courses by ID number
 SELECT studentFirstName, studentLastName, studentEmail, studentNumber, Courses.courseName FROM Students

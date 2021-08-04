@@ -262,16 +262,21 @@ app.post('/update-course', function (req, res, next){
 //====================== Rooms SQL Functions ======================
 app.get('/room', function (req, res){
   context = {};
-  select_query = "SELECT Rooms.roomID, roomNumber, Courses.courseName FROM Rooms LEFT JOIN Courses ON Rooms.roomID = Courses.roomID ORDER BY roomNumber;";
-
-  // For search queries
-  if (req.query.roomNumber != '' && req.query.courseName == '') {
-    select_query = `SELECT Rooms.roomID, roomNumber, Courses.courseName FROM Rooms LEFT JOIN Courses ON Rooms.roomID = Courses.roomID WHERE roomNumber = '${req.query.roomNumber}';`;
-  } else if (req.query.roomNumber == '' && req.query.courseName != '') {
-    select_query = `SELECT Rooms.roomID, roomNumber, Courses.courseName FROM Rooms LEFT JOIN Courses ON Rooms.roomID = Courses.roomID WHERE Courses.courseName = '${req.query.courseName}';`;
-  } else if (req.query.roomNumber != undefined && req.query.courseName != undefined) {
-    select_query = `SELECT Rooms.roomID, roomNumber, Courses.courseName FROM Rooms LEFT JOIN Courses ON Rooms.roomID = Courses.roomID WHERE roomNumber = '${req.query.roomNumber}' AND Courses.courseName = '${req.query.courseName}';`;
-  } 
+  let select_query;
+  if (Object.keys(req.query).length === 0){
+    select_query = "SELECT Rooms.roomID, roomNumber, Courses.courseName FROM Rooms LEFT JOIN Courses ON Rooms.roomID = Courses.roomID";
+  }
+  else
+  {
+    let where_query = " WHERE "
+    if (req.query.roomNumber !== ''){
+      where_query = where_query + `roomNumber LIKE "${req.query.roomNumber}%" OR `;
+    }
+    if (req.query.courseName !== ''){
+      where_query = where_query + `courseName LIKE "${req.query.courseName}%" OR `;
+    }
+    select_query = "SELECT Rooms.roomID, roomNumber, Courses.courseName FROM Rooms LEFT JOIN Courses ON Rooms.roomID = Courses.roomID" + where_query.substring(0, where_query.length-3);
+  }
   
   mysql.pool.query(select_query, (error, results, fields) => {
     if (error) {

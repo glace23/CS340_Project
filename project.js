@@ -165,7 +165,7 @@ app.get('/course', function (req, res){
   context = {};
     let select_query;
   if (Object.keys(req.query).length === 0){
-    select_query = "SELECT courseID, courseName, DATE_FORMAT(courseStartDate, '%Y-%m-%d') AS startDate, DATE_FORMAT(courseEndDate, '%Y-%m-%d') AS endDate, Rooms.roomNumber AS roomN, Professors.professorNumber, Professors.professorFirstName AS professorFN, Professors.professorLastName AS professorLN FROM Courses LEFT JOIN Professors ON Courses.professorID = Professors.professorID LEFT JOIN Rooms ON Courses.roomID = Rooms.roomID"
+    select_query = "SELECT courseID, courseName, DATE_FORMAT(courseStartDate, '%Y-%m-%d') AS startDate, DATE_FORMAT(courseEndDate, '%Y-%m-%d') AS endDate, Rooms.roomID, Rooms.roomNumber AS roomN, Professors.professorID, Professors.professorNumber, Professors.professorFirstName AS professorFN, Professors.professorLastName AS professorLN FROM Courses LEFT JOIN Professors ON Courses.professorID = Professors.professorID LEFT JOIN Rooms ON Courses.roomID = Rooms.roomID"
   }
   else
   {
@@ -189,7 +189,7 @@ app.get('/course', function (req, res){
       where_query = where_query + `professorLastName LIKE "${req.query.professorlname}%" OR `;
     }
 
-    select_query = "SELECT courseID, courseName, DATE_FORMAT(courseStartDate, '%Y-%m-%d') AS startDate, DATE_FORMAT(courseEndDate, '%Y-%m-%d') AS endDate, Rooms.roomNumber AS roomN, Professors.professorNumber, Professors.professorFirstName AS professorFN, Professors.professorLastName AS professorLN FROM Courses LEFT JOIN Professors ON Courses.professorID = Professors.professorID LEFT JOIN Rooms ON Courses.roomID = Rooms.roomID"
+    select_query = "SELECT courseID, courseName, DATE_FORMAT(courseStartDate, '%Y-%m-%d') AS startDate, DATE_FORMAT(courseEndDate, '%Y-%m-%d') AS endDate, Rooms.roomID, Rooms.roomNumber AS roomN, Professors.professorID, Professors.professorNumber, Professors.professorFirstName AS professorFN, Professors.professorLastName AS professorLN FROM Courses LEFT JOIN Professors ON Courses.professorID = Professors.professorID LEFT JOIN Rooms ON Courses.roomID = Rooms.roomID"
      + where_query.substring(0, where_query.length-3);
   };
 
@@ -199,7 +199,25 @@ app.get('/course', function (req, res){
         res.end();
     }
     context.courses = results;
-    return res.render('courselookup', context);
+
+    let select_room = "SELECT * FROM Rooms"
+    mysql.pool.query(select_room, (error, results, fields) => {
+      if (error) {
+          res.write(JSON.stringify(error));
+          res.end();
+      }
+      context.rooms = results;
+
+      let select_professor = "SELECT CONCAT(Professors.professorFirstName, ' ', Professors.professorLastName) AS 'professorName', professorID FROM Professors"
+      mysql.pool.query(select_professor, (error, results, fields) => {
+        if (error) {
+            res.write(JSON.stringify(error));
+            res.end();
+        }
+        context.professors = results;
+        return res.render('courselookup', context);
+      });
+    });
   });
 });
 
@@ -229,8 +247,8 @@ app.post('/insert-course', function (req, res, next) {
 
 app.post('/update-course', function (req, res, next){
   context = {};
-  update_query = "UPDATE Courses SET courseStartDate = ?, courseEndDate = ?, roomID = (SELECT roomID FROM Rooms WHERE roomNumber = ?), professorID = (SELECT professorID FROM Professors WHERE professorNumber = ?) WHERE courseID = ?";
-  mysql.pool.query(update_query, [req.body.startDate, req.body.endDate, req.body.roomNumber, req.body.professorNumber, req.body.id], 
+  update_query = "UPDATE Courses SET courseStartDate = ?, courseEndDate = ?, roomID = ?, professorID = ? WHERE courseID = ?";
+  mysql.pool.query(update_query, [req.body.startDate, req.body.endDate, req.body.roomID, req.body.professorID, req.body.id], 
     function(err, result) {
       if (err) {
         next(err);

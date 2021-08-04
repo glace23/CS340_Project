@@ -1,45 +1,3 @@
-function checkString(){
-    let checkcoursename = document.getElementById("coursename").value;
-    let checkstart = document.getElementById("coursestart").value;
-    let checkend = document.getElementById("courseend").value;
-    let checkroomnumber = document.getElementById("roomnumber").value;
-    let checkprofessorfname = document.getElementById("professorfname").value;
-    let checkprofessorlname = document.getElementById("professorlname").value;
-    let search = '';
-
-    if (checkcoursename !== ''){
-        search = search.concat(" Course name:");
-        search = search.concat(checkcoursename);
-    }
-    if (checkstart !== ''){
-        search = search.concat(" Start Date:");
-        search = search.concat(checkstart);
-    }
-    if (checkend !== ''){
-        search = search.concat(" End Date:");
-        search = search.concat(checkend);
-    }
-    if (checkroomnumber !== ''){
-        search = search.concat(" Room Number:");
-        search = search.concat(checkroomnumber);
-    }
-    if (checkprofessorfname !== ''){
-        search = search.concat(" Professor First name:");
-        search = search.concat(checkprofessorfname);
-    }
-    if (checkprofessorlname !== ''){
-        search = search.concat(" Professor Last name:");
-        search = search.concat(checkprofessorlname);
-    }
-    if (search === ''){
-        search = "All fields were left blank";
-        document.getElementById("searchvalue").innerHTML = search;
-        return false;
-    }
-    document.getElementById("searchvalue").innerHTML = search;
-    return false;
-}
-
 // toggle course look up form
 function showCourseLookup(){
     lookup_form = document.getElementById("course-lookup");
@@ -128,7 +86,7 @@ req.send(JSON.stringify(data));
 });
 
 
-function updateCourse(courseID, professorNumber){
+function updateCourse(courseID, professorNumber, roomID, professorID){
     let course = document.getElementById("course" + courseID);
     let courseName = course.cells[0].innerHTML;
     let courseStartDate = course.cells[1].innerHTML;
@@ -140,8 +98,8 @@ function updateCourse(courseID, professorNumber){
     document.getElementById("editName").value = courseName;
     document.getElementById("editStart").value = courseStartDate;
     document.getElementById("editEnd").value = courseEndDate;
-    document.getElementById("editRoomNumber").value = roomNumber;
-    document.getElementById("editProfessorNumber").value = professorNumber;
+    document.getElementById("editRoomNumber").value = roomID;
+    document.getElementById("editProfessorNumber").value = professorID;
     document.getElementById("editcid").value = courseID;
     document.getElementById("updateCourse").hidden = false;
 
@@ -154,8 +112,8 @@ function saveUpdateCourse() {
     data.courseName = document.getElementById("editName").value;
     data.startDate = document.getElementById("editStart").value;
     data.endDate = document.getElementById("editEnd").value;
-    data.roomNumber = document.getElementById("editRoomNumber").value;
-    data.professorNumber = document.getElementById("editProfessorNumber").value;
+    data.roomID = document.getElementById("editRoomNumber").value;
+    data.professorID = document.getElementById("editProfessorNumber").value;
     data.id = document.getElementById("editcid").value;
    
    req.open("POST", "/update-course", true);

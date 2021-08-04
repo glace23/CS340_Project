@@ -87,7 +87,7 @@
             <td>{{roomN}}</td>
             <td>{{professorFN}}</td>
             <td>{{professorLN}}</td>
-            <td><button onclick="updateCourse({{courseID}}, {{professorNumber}})">Update</button></td>
+            <td><button onclick="updateCourse({{courseID}}, {{professorNumber}}, {{roomID}}, {{professorID}})">Update</button></td>
             <td><button onclick="deleteCourse({{courseID}})">Delete</button></td>
         </tr>
         {{/each}}
@@ -113,9 +113,21 @@
                 <td><input type="text" id="editName" name="cname" pattern="[A-Za-z]{2}[0-9]{3}" maxlength="5"></input></td>
                 <td><input type="date" id="editStart" name="cstart" required></input></td>
                 <td><input type="date" id="editEnd" name="cend" required></input></td>
-                <td><input type="text" id="editRoomNumber" name="croom" pattern="[A-Z]{1}[0-9]{3}" maxlength="4"></input></td>
-                <td><input type="text" id="editProfessorNumber" name="cnumber" pattern="[0-9]{5}" minlength="5" maxlength="5"></input></td>
-                <td><input type="text" id="editcid" disabled></input></td>
+                <td>
+                    <select id="editRoomNumber" name="croom">
+                        {{#each rooms}}
+                            <option value="{{roomID}}">{{roomNumber}}</option>
+                        {{/each}}
+                    </select>
+                </td>
+                <td>
+                    <select id="editProfessorNumber" name="cnumber">
+                        {{#each professors}}
+                            <option value="{{professorID}}">{{professorName}}</option>
+                        {{/each}}
+                    </select>
+                </td>
+                <td hidden><input type="text" id="editcid" disabled></input></td>
                 <td><button onclick="saveUpdateCourse()">Save</button></td>
             </tr>
         </tbody>

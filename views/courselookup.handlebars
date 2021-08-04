@@ -115,14 +115,14 @@
                 <td><input type="date" id="editEnd" name="cend" required></input></td>
                 <td>
                     <select id="editRoomNumber" name="croom">
-                        {{#each courses}}
-                            <option value="{{roomID}}">{{roomN}}</option>
+                        {{#each rooms}}
+                            <option value="{{roomID}}">{{roomNumber}}</option>
                         {{/each}}
                     </select>
                 </td>
                 <td>
                     <select id="editProfessorNumber" name="cnumber">
-                        {{#each courses}}
+                        {{#each professors}}
                             <option value="{{professorID}}">{{professorName}}</option>
                         {{/each}}
                     </select>

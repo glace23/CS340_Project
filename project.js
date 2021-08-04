@@ -33,7 +33,26 @@ app.get('/',function(req,res){
 //====================== Enrollments SQL Functions ======================
 app.get('/enrollment', function (req, res){
   context = {};
-  select_query = "SELECT enrollmentID, CONCAT(Professors.professorFirstName, ' ', Professors.professorLastName) AS 'professor', Courses.courseName, CONCAT(Students.studentFirstName, ' ', Students.studentLastName) AS 'student', Rooms.roomNumber FROM Enrollments INNER JOIN Courses ON Courses.courseID = Enrollments.courseID INNER JOIN Professors ON Courses.professorID = Professors.professorID INNER JOIN Students ON Students.studentID = Enrollments.studentID INNER JOIN Rooms ON Courses.roomID = Rooms.roomID ORDER BY Courses.courseName;";
+  let select_query;
+  if (Object.keys(req.query).length === 0){
+    select_query = "SELECT enrollmentID, CONCAT(Professors.professorFirstName, ' ', Professors.professorLastName) AS 'professor', Professors.professorNumber, Courses.courseName, DATE_FORMAT(Courses.courseStartDate, '%Y-%m-%d') AS startDate, CONCAT(Students.studentFirstName, ' ', Students.studentLastName) AS 'student', Students.studentNumber, Rooms.roomNumber FROM Enrollments INNER JOIN Courses ON Courses.courseID = Enrollments.courseID INNER JOIN Professors ON Courses.professorID = Professors.professorID INNER JOIN Students ON Students.studentID = Enrollments.studentID INNER JOIN Rooms ON Courses.roomID = Rooms.roomID";
+  }
+  else
+  {
+    let where_query = " WHERE "
+    if (req.query.studentnumber !== undefined){
+      where_query = where_query + `studentNumber LIKE "${req.query.studentnumber}%"`;
+    }
+    if (req.query.professornumber !== undefined){
+      where_query = where_query + `professorNumber LIKE "${req.query.professornumber}%"`;
+    }
+    if (req.query.coursename !== undefined){
+      where_query = where_query + `courseName LIKE "${req.query.coursename}%" AND ` + `courseStartDate LIKE "${req.query.coursestart}%"`;
+    }
+    select_query = "SELECT enrollmentID, CONCAT(Professors.professorFirstName, ' ', Professors.professorLastName) AS 'professor', Professors.professorNumber, Courses.courseName, DATE_FORMAT(Courses.courseStartDate, '%Y-%m-%d') AS startDate, CONCAT(Students.studentFirstName, ' ', Students.studentLastName) AS 'student', Students.studentNumber, Rooms.roomNumber FROM Enrollments INNER JOIN Courses ON Courses.courseID = Enrollments.courseID INNER JOIN Professors ON Courses.professorID = Professors.professorID INNER JOIN Students ON Students.studentID = Enrollments.studentID INNER JOIN Rooms ON Courses.roomID = Rooms.roomID"
+    + where_query.substring(0, where_query.length);
+  }
+
   mysql.pool.query(select_query, (error, results, fields) => {
     if (error) {
         res.write(JSON.stringify(error));
@@ -173,7 +192,7 @@ app.get('/course', function (req, res){
     select_query = "SELECT courseID, courseName, DATE_FORMAT(courseStartDate, '%Y-%m-%d') AS startDate, DATE_FORMAT(courseEndDate, '%Y-%m-%d') AS endDate, Rooms.roomNumber AS roomN, Professors.professorNumber, Professors.professorFirstName AS professorFN, Professors.professorLastName AS professorLN FROM Courses LEFT JOIN Professors ON Courses.professorID = Professors.professorID LEFT JOIN Rooms ON Courses.roomID = Rooms.roomID"
      + where_query.substring(0, where_query.length-3);
   };
-  
+
   mysql.pool.query(select_query, (error, results, fields) => {
     if (error) {
         res.write(JSON.stringify(error));

@@ -2,27 +2,27 @@
 
 <button onclick="showProfessorLookup()">Look for Professor</button><button onclick="showProfessorAdd()">Add Professor</button>
 
-<form id="professor-lookup" hidden>  
+<form id="professor-lookup" method="GET" action="/professor" hidden>  
     <h3>Look for Professor:</h3>
     <p>Search for the fields you would like to, all fields are optional.</p>
     <div class="professor-form">
         <label for="professor fname">Professor First Name: </label>
-        <input type="text" name="professor fname" id="professorfname">
+        <input type="text" name="professorfname" id="professorfname">
     </div>
     <div class="professor-form">
         <label for="professor name">Professor Last Name: </label>
-        <input type="text" name="professor lname" id="professorlname">
+        <input type="text" name="professorlname" id="professorlname">
     </div>
     <div class="professor-form">
         <label for="professor email">Professor Email: </label>
-        <input type="email" name="professor email" id="professoremail">
+        <input type="email" name="professoremail" id="professoremail">
     </div>
     <div class="professor-form">
         <label for="professor number">Professor ID Number: </label>
-        <input type="text" name="professor number" id="professornumber">
+        <input type="text" name="professornumber" id="professornumber" pattern="[0-9]{,6}" maxlength="6">
     </div>
     <div class="professor-form">
-        <button onclick="return checkString();">Search</button>
+        <input type="submit">
     </div>
 </form>
 
@@ -59,6 +59,7 @@
             <th>Professor Last Name</th>
             <th>Professor Email</th>
             <th>Professor ID Number</th>
+            <th colspan="2"><a href='/professor'><button>Reset</button></a></th>
     </thead>
     <tbody>
         {{#each professors}}
@@ -67,8 +68,8 @@
             <td>{{professorLastName}}</td>
             <td>{{professorEmail}}</td>
             <td>{{professorNumber}}</td>
-            <td id="update"><button onclick="updateProfessor({{professorID}})">Update</button></td>
-            <td id="delete"><button onclick="deleteProfessor({{professorID}})">Delete</button></td>
+            <td><button onclick="updateProfessor({{professorID}})">Update</button></td>
+            <td><button onclick="deleteProfessor({{professorID}})">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
@@ -94,7 +95,7 @@
                 <td><input type="text" id="editlname" value="" pattern="[A-Za-z]+""></input></td> 
                 <td><input type="text" id="editemail" value=""></input></td>    
                 <td><input type="text" id="editnumber" value="" disabled></input></td>  
-                <td><input type="text" id="editProfessorid" value="" disabled hidden></input></td> 
+                <td hidden><input type="text" id="editProfessorid" value="" disabled></input></td> 
                 <td><button onclick="saveUpdateProfessor()">Save</button></td>
             </tr>
         </tbody>

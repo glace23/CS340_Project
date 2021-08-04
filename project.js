@@ -73,7 +73,28 @@ app.post('/insert-enrollment', function (req, res, next) {
 //====================== Professors SQL Functions ======================
 app.get('/professor', function (req, res){
   context = {};
-  select_query = "SELECT professorID, professorFirstName, professorLastName, professorEmail, professorNumber FROM Professors ORDER BY professorFirstName;";
+  let select_query;
+  if (Object.keys(req.query).length === 0){
+    select_query = "SELECT professorID, professorFirstName, professorLastName, professorEmail, professorNumber FROM Professors";
+  }
+  else
+  {
+    let where_query = " WHERE "
+    if (req.query.professorfname !== ''){
+      where_query = where_query + `professorFirstName LIKE "${req.query.professorfname}%" OR `;
+    }
+    if (req.query.professorlname !== ''){
+      where_query = where_query + `professorLastName LIKE "${req.query.professorlname}%" OR `;
+    }
+    if (req.query.professoremail !== ''){
+      where_query = where_query + `professorEmail LIKE "${req.query.professoremail}%" OR `;
+    }
+    if (req.query.professornumber !== ''){
+      where_query = where_query + `professorNumber LIKE "${req.query.professornumber}%" OR `;
+    }
+    select_query = "SELECT professorID, professorFirstName, professorLastName, professorEmail, professorNumber FROM Professors" + where_query.substring(0, where_query.length-3);
+  }
+  
   mysql.pool.query(select_query, (error, results, fields) => {
     if (error) {
         res.write(JSON.stringify(error));
@@ -123,7 +144,36 @@ app.post('/update-professor', function (req, res, next){
 //====================== Courses SQL Functions ======================
 app.get('/course', function (req, res){
   context = {};
-  select_query = "SELECT courseID, courseName, DATE_FORMAT(courseStartDate, '%Y-%m-%d') AS startDate, DATE_FORMAT(courseEndDate, '%Y-%m-%d') AS endDate, Rooms.roomNumber AS roomN, Professors.professorNumber, Professors.professorFirstName AS professorFN, Professors.professorLastName AS professorLN FROM Courses LEFT JOIN Professors ON Courses.professorID = Professors.professorID LEFT JOIN Rooms ON Courses.roomID = Rooms.roomID ORDER BY courseName;";
+    let select_query;
+  if (Object.keys(req.query).length === 0){
+    select_query = "SELECT courseID, courseName, DATE_FORMAT(courseStartDate, '%Y-%m-%d') AS startDate, DATE_FORMAT(courseEndDate, '%Y-%m-%d') AS endDate, Rooms.roomNumber AS roomN, Professors.professorNumber, Professors.professorFirstName AS professorFN, Professors.professorLastName AS professorLN FROM Courses LEFT JOIN Professors ON Courses.professorID = Professors.professorID LEFT JOIN Rooms ON Courses.roomID = Rooms.roomID"
+  }
+  else
+  {
+    let where_query = " WHERE "
+    if (req.query.coursename !== ''){
+      where_query = where_query + `courseName LIKE "${req.query.coursename}%" OR `;
+    }
+    if (req.query.coursestart !== ''){
+      where_query = where_query + `courseStartDate LIKE "${req.query.coursestart}%" OR `;
+    }
+    if (req.query.courseend !== ''){
+      where_query = where_query + `courseEndDate LIKE "${req.query.courseend}%" OR `;
+    }
+    if (req.query.roomnumber !== ''){
+      where_query = where_query + `roomNumber LIKE "${req.query.roomnumber}%" OR `;
+    }
+    if (req.query.professorfname !== ''){
+      where_query = where_query + `professorFirstName LIKE "${req.query.professorfname}%" OR `;
+    }
+    if (req.query.professorlname !== ''){
+      where_query = where_query + `professorLastName LIKE "${req.query.professorlname}%" OR `;
+    }
+
+    select_query = "SELECT courseID, courseName, DATE_FORMAT(courseStartDate, '%Y-%m-%d') AS startDate, DATE_FORMAT(courseEndDate, '%Y-%m-%d') AS endDate, Rooms.roomNumber AS roomN, Professors.professorNumber, Professors.professorFirstName AS professorFN, Professors.professorLastName AS professorLN FROM Courses LEFT JOIN Professors ON Courses.professorID = Professors.professorID LEFT JOIN Rooms ON Courses.roomID = Rooms.roomID"
+     + where_query.substring(0, where_query.length-3);
+  };
+  
   mysql.pool.query(select_query, (error, results, fields) => {
     if (error) {
         res.write(JSON.stringify(error));

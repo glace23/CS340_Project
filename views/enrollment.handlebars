@@ -59,7 +59,7 @@
             <th>Student</th>
             <th>Student Number</th>
             <th>Room Number</th>
-            <th colspan="2"><a href="/enrollment"><button>Reset</button></a></th>
+            <th><a href="/enrollment"><button>Reset</button></a></th>
         </tr>
         
     </thead>
@@ -73,7 +73,6 @@
             <td>{{student}}</td>
             <td>{{studentNumber}}</td>
             <td>{{roomNumber}}</td>
-            <td><button onclick="updateEnrollment({{enrollmentID}})">Update</button></td>
             <td><button onclick="deleteEnrollment({{enrollmentID}})">Delete</button></td>
         </tr>
         {{/each}}

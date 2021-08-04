@@ -110,19 +110,19 @@
         </thead>
         <tbody>
             <tr>
-                <td><input type="text" id="editName" name="cname" pattern="[A-Za-z]{2}[0-9]{3}" maxlength="5"></input></td>
+                <td><input type="text" id="editName" name="cname" pattern="[A-Za-z]{2}[0-9]{3}" maxlength="5" disabled></input></td>
                 <td><input type="date" id="editStart" name="cstart" required></input></td>
                 <td><input type="date" id="editEnd" name="cend" required></input></td>
                 <td>
                     <select id="editRoomNumber" name="croom">
-                        {{#each rooms}}
-                            <option value="{{roomID}}">{{roomNumber}}</option>
+                        {{#each courses}}
+                            <option value="{{roomID}}">{{roomN}}</option>
                         {{/each}}
                     </select>
                 </td>
                 <td>
                     <select id="editProfessorNumber" name="cnumber">
-                        {{#each professors}}
+                        {{#each courses}}
                             <option value="{{professorID}}">{{professorName}}</option>
                         {{/each}}
                     </select>

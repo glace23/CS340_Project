@@ -200,6 +200,7 @@ app.get('/course', function (req, res){
     }
     context.courses = results;
 
+    //Select for room number and room id
     let select_room = "SELECT * FROM Rooms"
     mysql.pool.query(select_room, (error, results, fields) => {
       if (error) {
@@ -208,6 +209,7 @@ app.get('/course', function (req, res){
       }
       context.rooms = results;
 
+      //Select for professor name and professor ID
       let select_professor = "SELECT CONCAT(Professors.professorFirstName, ' ', Professors.professorLastName) AS 'professorName', professorID FROM Professors"
       mysql.pool.query(select_professor, (error, results, fields) => {
         if (error) {

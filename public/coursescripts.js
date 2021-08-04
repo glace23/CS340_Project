@@ -134,6 +134,9 @@ function updateCourse(courseID, professorNumber){
     let courseStartDate = course.cells[1].innerHTML;
     let courseEndDate = course.cells[2].innerHTML;
     let roomNumber = course.cells[3].innerHTML;
+    if (professorNumber == undefined){
+        professorNumber = ''
+    }
     document.getElementById("editName").value = courseName;
     document.getElementById("editStart").value = courseStartDate;
     document.getElementById("editEnd").value = courseEndDate;

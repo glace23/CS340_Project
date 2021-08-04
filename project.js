@@ -158,64 +158,17 @@ app.post('/insert-course', function (req, res, next) {
     })
 });
 
-
-
-
-
-
 app.post('/update-course', function (req, res, next){
   context = {};
-
-  select_room_query = "SELECT * FROM Rooms WHERE roomNumber = ?";
-  select_professor_query = "SELECT * FROM Professors WHERE professorNumber = ?";
-  update_query = "UPDATE Courses SET courseStartDate = ?, courseEndDate = ?, roomID = ?, professorID = ? WHERE courseID = ?";
-
-  // Nest query, get room id first 
-  mysql.pool.query(select_room_query, [req.body.roomNumber], (err, results) => {
-    if (err) {
-      next(err);
-      return;
-    }
-
-    // Error check if the query returned a valid value
-    if (results[0] != undefined){
-      context.roomID = results[0].roomID;
-    }
-    // If invalid, set id to null
-    else{
-      context.roomID = null;
-    }
-
-    // professor id second
-    mysql.pool.query(select_professor_query, [req.body.professorNumber], (err, results) => {
-    if (err) {
-      next(err);
-      return;
-    }
-
-    // Error check if the query returned a valid value
-    if (results[0] != undefined){
-      context.professorID = results[0].professorID;
-    }
-    // If invalid, set id to null
-    else{
-      context.professorID = null;
-    }
-
-      // finally insert into db
-      mysql.pool.query(update_query, [req.body.startDate, req.body.endDate, context.roomID, context.professorID, req.body.id], 
-        function(err, result) {
-          if (err) {
-          next(err);
-          return
-          }
-
-
-        res.send();
-      });
-    });
+  update_query = "UPDATE Courses SET courseStartDate = ?, courseEndDate = ?, roomID = (SELECT roomID FROM Rooms WHERE roomNumber = ?), professorID = (SELECT professorID FROM Professors WHERE professorNumber = ?) WHERE courseID = ?";
+  mysql.pool.query(update_query, [req.body.startDate, req.body.endDate, req.body.roomNumber, req.body.professorNumber, req.body.id], 
+    function(err, result) {
+      if (err) {
+        next(err);
+        return
+      }
+    res.send();
   });
-
 });
 
 
@@ -307,26 +260,6 @@ app.get('/student', function (req, res){
   });
 
 });
-
-app.get('/student-lookup', function (req, res){
-  context = {};
-  console.log(req.query);
-  console.log(req.query.studentFirstName)
-  select_query = "SELECT studentFirstName, studentLastName, studentEmail, studentNumber, studentPhoneNumber, studentID FROM Students " +
-                 "WHERE studentFirstName ?, studentLastName ?, studentEmail ?, studentNumber ?, studentPhoneNumber ?";
-  
-  mysql.pool.query(select_query, [req.query.studentFirstName, req.query.studentLastName, req.query.studentEmail, req.query.studentNumber, req.query.studentPhoneNumber],
-    (error, results) => {
-    if (error) {
-        res.write(JSON.stringify(error));
-        res.end();
-    }
-    
-    context.studentSearch = results;
-    res.render('slookup', context);
-  });
-});
-
 
 app.post('/delete-student', function (req, res, next){
   delete_query = "DELETE FROM Students WHERE studentID = ?;";

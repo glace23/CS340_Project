@@ -32,11 +32,13 @@ CREATE TABLE Courses(
     courseName VARCHAR(255) NOT NULL,
     courseStartDate DATE NOT NULL,
     courseEndDate DATE NOT NULL,
-    roomID INT(11),
-    professorID INT(11),
+    roomID INT(11) DEFAULT NULL,
+    professorID INT(11) DEFAULT NULL,
     PRIMARY KEY(courseID),
-    FOREIGN KEY(roomID) REFERENCES Rooms(roomID),
-	FOREIGN KEY(professorID) REFERENCES Professors(professorID),
+    FOREIGN KEY(roomID) REFERENCES Rooms(roomID)
+	ON DELETE SET NULL,
+	FOREIGN KEY(professorID) REFERENCES Professors(professorID)
+	ON DELETE SET NULL,
 	CONSTRAINT course_key UNIQUE (courseName, courseStartDate)
     );
     
@@ -47,8 +49,12 @@ CREATE TABLE Courses(
      studentID INT(11),
      courseID INT(11),
      PRIMARY KEY(enrollmentID),
-     FOREIGN KEY(studentID) REFERENCES Students(studentID),
-     FOREIGN KEY(courseID) REFERENCES Courses(courseID)
+     FOREIGN KEY(studentID) REFERENCES Students(studentID) 
+	ON DELETE CASCADE
+	ON UPDATE CASCADE,
+     FOREIGN KEY(courseID) REFERENCES Courses(courseID) 
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
      );
 
 DESCRIBE Students;

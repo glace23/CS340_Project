@@ -87,7 +87,10 @@
             <td>{{roomN}}</td>
             <td>{{professorFN}}</td>
             <td>{{professorLN}}</td>
-            <td><button onclick="updateCourse({{courseID}}, {{professorNumber}}, {{roomID}}, {{professorID}})">Update</button></td>
+            <td hidden>{{professorNumber}}</td>
+            <td hidden>{{roomID}}</td> 
+            <td hidden>{{professorID}}</td>
+            <td><button onclick="updateCourse({{courseID}})">Update</button></td>
             <td><button onclick="deleteCourse({{courseID}})">Delete</button></td>
         </tr>
         {{/each}}

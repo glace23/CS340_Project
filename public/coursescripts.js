@@ -86,15 +86,16 @@ req.send(JSON.stringify(data));
 });
 
 
-function updateCourse(courseID, professorNumber, roomID, professorID){
+function updateCourse(courseID){
     let course = document.getElementById("course" + courseID);
     let courseName = course.cells[0].innerHTML;
     let courseStartDate = course.cells[1].innerHTML;
     let courseEndDate = course.cells[2].innerHTML;
     let roomNumber = course.cells[3].innerHTML;
-    if (professorNumber == undefined){
-        professorNumber = ''
-    }
+    let professorNumber = course.cells[6].innerHTML
+    let roomID = course.cells[7].innerHTML
+    let professorID = course.cells[8].innerHTML
+
     document.getElementById("editName").value = courseName;
     document.getElementById("editStart").value = courseStartDate;
     document.getElementById("editEnd").value = courseEndDate;

@@ -26,7 +26,7 @@
     </div>
 </form>
 
-<form id="professor-add" hidden>
+<form id="professor-add" onsubmit="addProfessor()" hidden>
     <h3>Add a Professor:</h3>
     <p>Add a new professor to the database. All fields are required.</p>
     <div>
@@ -45,7 +45,7 @@
         <label for="pnumber">Professor ID Number:</label>
         <input type="text" id="pnumber" name="pnumber" placeholder="12345" pattern="[0-9]{5}" minlength="5" maxlength="5" required> 
     </div>
-    <input type="submit" value="Add Professor" id="addProfessor">
+    <button>Add New Professor</button>
 </form>
 
 <div>
@@ -91,12 +91,14 @@
         </thead>
         <tbody>
             <tr>
-                <td><input type="text" id="editfname" value="" pattern="[A-Za-z]+""></input></td>    
-                <td><input type="text" id="editlname" value="" pattern="[A-Za-z]+""></input></td> 
-                <td><input type="text" id="editemail" value=""></input></td>    
-                <td><input type="text" id="editnumber" value="" disabled></input></td>  
-                <td hidden><input type="text" id="editProfessorid" value="" disabled></input></td> 
-                <td><button onclick="saveUpdateProfessor()">Save</button></td>
+                <form id="professor-update">
+                    <td><input type="text" id="editfname" value="" pattern="[A-Za-z]+" required></input></td>    
+                    <td><input type="text" id="editlname" value="" pattern="[A-Za-z]+" required></input></td> 
+                    <td><input type="email" id="editemail" value="" required></input></td>    
+                    <td><input type="text" id="editnumber" value="" disabled></input></td>  
+                    <td hidden><input type="text" id="editProfessorid" value="" disabled></input></td> 
+                    <td><button onclick="saveUpdateProfessor()">Save</button></td>
+                </form>
             </tr>
         </tbody>
     </table>

@@ -46,20 +46,16 @@ function deleteProfessor(professorID){
 }
 
 let addProfessorForm = document.getElementById("professor-add");
-let addprofessorButton = document.getElementById("addProfessor");
 let professorFirstNameAdd = document.getElementById("pfname");
 let professorLastNameAdd = document.getElementById("plname");
 let professorEmailAdd = document.getElementById("pemail");
 let professorNumberAdd = document.getElementById("pnumber");
 
-// Listen for adding a new professor
-addprofessorButton.addEventListener("click", (event) => {
-    event.preventDefault();
-
+function addProfessor() {
     // form validation check
     if (!addProfessorForm.checkValidity()) {
-        alert("Improper inputs. Please try again.");
-        addProfessorForm.find(':submit').click()
+        alert("Improper inputs for adding a professor. Please try again.");
+        addProfessorForm.find().click()
     }
     
     // place professors in dictionary
@@ -81,8 +77,7 @@ addprofessorButton.addEventListener("click", (event) => {
         }
     })
 req.send(JSON.stringify(data));
-});
-
+};
 
 
 function updateProfessor(professorID){
@@ -102,23 +97,30 @@ function updateProfessor(professorID){
 
 
 function saveUpdateProfessor() {
-   var req = new XMLHttpRequest();
-   var data = {};
-   data.professorFirstName = document.getElementById("editfname").value;
-   data.professorLastName = document.getElementById("editlname").value;
-   data.professorEmail = document.getElementById("editemail").value;
-   data.id = document.getElementById("editProfessorid").value;
-   
-   req.open("POST", "/update-professor", true);
-   req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-   req.addEventListener("load", () => {
-       if (req.status >= 200 && req.status < 400) {
-           window.location.reload();
-       } else {
-           console.log("ERROR");
-       }
-   })
+    let updateProfessorForm = document.getElementById("professor-update");
+    // form validation check
+    if (!updateProfessorForm.checkValidity()) {
+        alert("Improper inputs for updating a professor. Please try again.");
+        updateProfessorForm.find().click()
+    }
 
-   req.send(JSON.stringify(data));
-   document.getElementById("updateProfessor").hidden = true;
+    var req = new XMLHttpRequest();
+    var data = {};
+    data.professorFirstName = document.getElementById("editfname").value;
+    data.professorLastName = document.getElementById("editlname").value;
+    data.professorEmail = document.getElementById("editemail").value;
+    data.id = document.getElementById("editProfessorid").value;
+    
+    req.open("POST", "/update-professor", true);
+    req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    req.addEventListener("load", () => {
+        if (req.status >= 200 && req.status < 400) {
+            window.location.reload();
+        } else {
+            console.log("ERROR");
+        }
+    })
+
+    req.send(JSON.stringify(data));
+    document.getElementById("updateProfessor").hidden = true;
 }

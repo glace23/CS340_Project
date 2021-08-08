@@ -54,7 +54,8 @@ CREATE TABLE Courses(
 	ON UPDATE CASCADE,
      FOREIGN KEY(courseID) REFERENCES Courses(courseID) 
 	ON DELETE CASCADE
-	ON UPDATE CASCADE
+	ON UPDATE CASCADE,
+	CONSTRAINT enrollment_key UNIQUE (studentID, courseID)
      );
 
 DESCRIBE Students;

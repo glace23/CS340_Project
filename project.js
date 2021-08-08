@@ -34,7 +34,8 @@ app.get('/',function(req,res){
 app.get('/enrollment', function (req, res){
   context = {};
   let select_query;
-  if (Object.keys(req.query).length === 0){
+  // if no search has been performed
+  if ( (req.query.studentnumber === undefined) && (req.query.professornumber === undefined) && (req.query.coursename === undefined) ){
     select_query = "SELECT enrollmentID, CONCAT(Professors.professorFirstName, ' ', Professors.professorLastName) AS 'professor', Professors.professorNumber, Courses.courseName, DATE_FORMAT(Courses.courseStartDate, '%Y-%m-%d') AS startDate, CONCAT(Students.studentFirstName, ' ', Students.studentLastName) AS 'student', Students.studentNumber, Rooms.roomNumber FROM Enrollments INNER JOIN Courses ON Courses.courseID = Enrollments.courseID INNER JOIN Professors ON Courses.professorID = Professors.professorID INNER JOIN Students ON Students.studentID = Enrollments.studentID INNER JOIN Rooms ON Courses.roomID = Rooms.roomID";
   }
   else
@@ -57,6 +58,7 @@ app.get('/enrollment', function (req, res){
     if (error) {
         res.write(JSON.stringify(error));
         res.end();
+        return;
     }
     context.enrollments = results;
     
@@ -66,6 +68,7 @@ app.get('/enrollment', function (req, res){
       if (error) {
           res.write(JSON.stringify(error));
           res.end();
+          return;
       }
       context.courses = results;
 
@@ -75,6 +78,7 @@ app.get('/enrollment', function (req, res){
         if (error) {
             res.write(JSON.stringify(error));
             res.end();
+            return;
         }
         context.students = results;
         return res.render('enrollment', context);
@@ -113,7 +117,8 @@ app.post('/insert-enrollment', function (req, res, next) {
 app.get('/professor', function (req, res){
   context = {};
   let select_query;
-  if (Object.keys(req.query).length === 0){
+  // if no search has been performed or all fields were left blank
+  if ( (req.query.professorfname === undefined) || (req.query.professorfname === '') && (req.query.professorlname === '') && (req.query.professoremail === '') && (req.query.professornumber === '') ){
     select_query = "SELECT professorID, professorFirstName, professorLastName, professorEmail, professorNumber FROM Professors";
   }
   else
@@ -183,8 +188,9 @@ app.post('/update-professor', function (req, res, next){
 //====================== Courses SQL Functions ======================
 app.get('/course', function (req, res){
   context = {};
-    let select_query;
-  if (Object.keys(req.query).length === 0){
+  let select_query;
+  // if no search has been performed or all fields were left blank
+  if ( (req.query.coursename === undefined) || (req.query.coursename === '') && (req.query.coursestart === '') && (req.query.courseend === '') && (req.query.roomnumber === '') && (req.query.professorfname === '') && (req.query.professorlname === '') ){
     select_query = "SELECT courseID, courseName, DATE_FORMAT(courseStartDate, '%Y-%m-%d') AS startDate, DATE_FORMAT(courseEndDate, '%Y-%m-%d') AS endDate, Rooms.roomID, Rooms.roomNumber AS roomN, Professors.professorID, Professors.professorNumber, Professors.professorFirstName AS professorFN, Professors.professorLastName AS professorLN FROM Courses LEFT JOIN Professors ON Courses.professorID = Professors.professorID LEFT JOIN Rooms ON Courses.roomID = Rooms.roomID"
   }
   else
@@ -217,6 +223,7 @@ app.get('/course', function (req, res){
     if (error) {
         res.write(JSON.stringify(error));
         res.end();
+        return;
     }
     context.courses = results;
 
@@ -226,6 +233,7 @@ app.get('/course', function (req, res){
       if (error) {
           res.write(JSON.stringify(error));
           res.end();
+          return;
       }
       context.rooms = results;
 
@@ -235,6 +243,7 @@ app.get('/course', function (req, res){
         if (error) {
             res.write(JSON.stringify(error));
             res.end();
+            return;
         }
         context.professors = results;
         return res.render('courselookup', context);
@@ -285,7 +294,8 @@ app.post('/update-course', function (req, res, next){
 app.get('/room', function (req, res){
   context = {};
   let select_query;
-  if (Object.keys(req.query).length === 0){
+  // if no search has been performed or all fields were left blank
+  if ( (req.query.roomNumber === undefined) || (req.query.roomNumber === '') && (req.query.courseName === '') ){
     select_query = "SELECT Rooms.roomID, roomNumber, Courses.courseName FROM Rooms LEFT JOIN Courses ON Rooms.roomID = Courses.roomID";
   }
   else
@@ -337,7 +347,8 @@ app.post('/insert-room', function (req, res, next) {
 app.get('/student', function (req, res){
   context = {};
   let select_query;
-  if (Object.keys(req.query).length === 0){
+  // if no search has been performed or all fields were left blank
+  if ( (req.query.studentfname === undefined) || (req.query.studentfname === '') && (req.query.studentlname === '') && (req.query.studentemail === '') && (req.query.studentnumber === '') && (req.query.studentphonenumber === '') ){
     select_query = "SELECT studentFirstName, studentLastName, studentEmail, studentNumber, studentPhoneNumber, studentID FROM Students";
   }
   else

@@ -4,7 +4,7 @@ var app = express();
 var mysql = require('./dbcon.js');
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 
-PORT = 30245;
+PORT = 30334;
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
@@ -59,7 +59,27 @@ app.get('/enrollment', function (req, res){
         res.end();
     }
     context.enrollments = results;
-    return res.render('enrollment', context);
+    
+    //Select for courses and course IDs
+    let select_courses = "SELECT * FROM Courses"
+    mysql.pool.query(select_courses, (error, results, fields) => {
+      if (error) {
+          res.write(JSON.stringify(error));
+          res.end();
+      }
+      context.courses = results;
+
+      //Select for student names and student IDs
+      let select_students = "SELECT CONCAT(Students.studentFirstName, ' ', Students.studentLastName) AS 'studentName', studentID FROM Students"
+      mysql.pool.query(select_students, (error, results, fields) => {
+        if (error) {
+            res.write(JSON.stringify(error));
+            res.end();
+        }
+        context.students = results;
+        return res.render('enrollment', context);
+      });
+    });
   });
 });
 
@@ -75,7 +95,7 @@ app.post('/delete-enrollment', function (req, res, next){
 });
 
 app.post('/insert-enrollment', function (req, res, next) {
-  insert_query = "INSERT INTO Enrollments(studentID, courseID) VALUES ((SELECT studentID FROM Students WHERE studentNumber = ?), (SELECT courseID FROM Courses WHERE courseName = ?));";
+  insert_query = "INSERT INTO Enrollments(studentID, courseID) VALUES (?, ?);";
   mysql.pool.query(insert_query, 
     [req.body.studentIDEnroll, req.body.courseNameEnroll],
     function(err, result) {
@@ -235,7 +255,7 @@ app.post('/delete-course', function (req, res, next){
 });
 
 app.post('/insert-course', function (req, res, next) {
-  insert_query = "INSERT INTO Courses(courseName, courseStartDate, courseEndDate, roomID, professorID) VALUES (?, ?, ?, (SELECT roomID FROM Rooms WHERE roomNumber = ?), (SELECT professorID FROM Professors WHERE professorNumber = ?));";
+  insert_query = "INSERT INTO Courses(courseName, courseStartDate, courseEndDate, roomID, professorID) VALUES (?, ?, ?, ?, ?);";
   mysql.pool.query(insert_query, 
     [req.body.courseName, req.body.courseStartDateAdd, req.body.courseEndDateAdd, req.body.courseRoomAdd, req.body.courseProfessor],
     function(err, result) {

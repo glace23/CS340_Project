@@ -2,18 +2,26 @@
 
 <button onclick="showEnrollmentAdd()">Add Enrollment</button>
 
-<form id="enrollment-add" hidden>
+<form id="enrollment-add" onsubmit="addEnrollment()" hidden>
     <h3>Add a enrollment:</h3>
     <p>Add a new enrollment to the database. All fields are required.</p> 
     <div>
         <label for="sNumber">Student ID Number:</label>
-        <input type="text" id="sNumber" name="sNumber" placeholder="123456" pattern="[0-9]{6}" minlength="6" maxlength="6" required>
+        <select id="sNumber" name="student" required>
+            {{#each students}}
+                <option value="{{studentID}}">{{studentName}}</option>
+            {{/each}}
+        </select>
     </div>
     <div>
         <label for="courseName">Course Name:</label>
-        <input type="text" id="courseName" name="courseName" placeholder="CS344" pattern="[A-Za-z]{2}[0-9]{3}" maxlength="5" required>
+        <select id="courseName" name="course" required>
+            {{#each courses}}
+                <option value="{{courseID}}">{{courseName}}</option>
+            {{/each}}
+        </select>
     </div>
-  <input type="submit" value="Add New enrollment" id="addEnrollment">
+  <button>Add Enrollment</button>
 </form>
 
 <p>Show all courses a student is taking.</p>

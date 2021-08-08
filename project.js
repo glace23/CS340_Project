@@ -4,7 +4,7 @@ var app = express();
 var mysql = require('./dbcon.js');
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 
-PORT = 30334;
+PORT = 30245;
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
@@ -61,7 +61,7 @@ app.get('/enrollment', function (req, res){
     context.enrollments = results;
     
     //Select for courses and course IDs
-    let select_courses = "SELECT * FROM Courses"
+    let select_courses = "SELECT courseID, courseName FROM Courses;";
     mysql.pool.query(select_courses, (error, results, fields) => {
       if (error) {
           res.write(JSON.stringify(error));
@@ -70,7 +70,7 @@ app.get('/enrollment', function (req, res){
       context.courses = results;
 
       //Select for student names and student IDs
-      let select_students = "SELECT CONCAT(Students.studentFirstName, ' ', Students.studentLastName) AS 'studentName', studentID FROM Students"
+      let select_students = "SELECT CONCAT(Students.studentFirstName, ' ', Students.studentLastName) AS 'studentName', studentID FROM Students";
       mysql.pool.query(select_students, (error, results, fields) => {
         if (error) {
             res.write(JSON.stringify(error));
@@ -97,7 +97,7 @@ app.post('/delete-enrollment', function (req, res, next){
 app.post('/insert-enrollment', function (req, res, next) {
   insert_query = "INSERT INTO Enrollments(studentID, courseID) VALUES (?, ?);";
   mysql.pool.query(insert_query, 
-    [req.body.studentIDEnroll, req.body.courseNameEnroll],
+    [req.body.studentIDEnroll, req.body.courseIDEnroll],
     function(err, result) {
       if (err) {
         next(err);

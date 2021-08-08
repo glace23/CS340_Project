@@ -44,17 +44,14 @@ function deleteRoom(roomID){
     req.send(JSON.stringify(data));
 }
 
-let addRoomButton = document.getElementById("addRoom");
 let roomNumberAdd = document.getElementById("roomNumberAdd");
 let addRoomForm = document.getElementById("room-add");
 
-addRoomButton.addEventListener("click", (event) => {
-    event.preventDefault();
-    
+function addRoom(){    
     // form validation check
     if (!addRoomForm.checkValidity()) {
         alert("Improper inputs. Please try again.");
-        addRoomForm.find(':submit').click()
+        addRoomForm.find().click();
     }
 
     // place room number in dictionary
@@ -72,5 +69,5 @@ addRoomButton.addEventListener("click", (event) => {
         }
     })
     req.send(JSON.stringify(data));
-});
+};
 

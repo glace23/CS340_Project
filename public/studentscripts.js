@@ -45,7 +45,6 @@ function deleteStudent(studentID) {
 }
 
 let addStudentForm = document.getElementById("student-add");
-let addStudentButton = document.getElementById("addStudent");
 let studentFirstNameAdd = document.getElementById("sfname");
 let studentLastNameAdd = document.getElementById("slname");
 let studentEmailAdd = document.getElementById("semail");
@@ -53,13 +52,12 @@ let studentNumberAdd = document.getElementById("snumber");
 let studentPhoneNumberAdd = document.getElementById("sphone");
 
 // Listen for adding a new student
-addStudentButton.addEventListener("click", (event) => {
-    event.preventDefault();
+function addStudent() {
 
     // form validation check
     if (!addStudentForm.checkValidity()) {
         alert("Improper inputs. Please try again.");
-        addStudentForm.find(':submit').click();
+        addStudentForm.find().click();
     }
     
     // place students in dictionary
@@ -82,7 +80,7 @@ addStudentButton.addEventListener("click", (event) => {
         }
     })
 req.send(JSON.stringify(data));
-});
+};
 
 
 function updateStudent(studentID){
@@ -104,24 +102,31 @@ function updateStudent(studentID){
 
 
 function saveUpdateStudent() {
-   var req = new XMLHttpRequest();
-   var data = {};
-   data.studentFirstName = document.getElementById("editfname").value;
-   data.studentLastName = document.getElementById("editlname").value;
-   data.studentEmail = document.getElementById("editemail").value;
-   data.studentPhoneNumber = document.getElementById("editphonenumber").value;
-   data.id = document.getElementById("editstudentid").value;
-   
-   req.open("POST", "/update-student", true);
-   req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-   req.addEventListener("load", () => {
-       if (req.status >= 200 && req.status < 400) {
-           window.location.reload();
-       } else {
-           console.log("ERROR");
-       }
-   })
+    let updateStudentForm = document.getElementById("student-update");
+    // form validation check
+    if (!updateStudentForm.checkValidity()) {
+        alert("Improper inputs for updating a student. Please try again.");
+        updateStudentForm.find().click();
+    }
 
-   req.send(JSON.stringify(data));
-   document.getElementById("updateStudent").hidden = true;
+    var req = new XMLHttpRequest();
+    var data = {};
+    data.studentFirstName = document.getElementById("editfname").value;
+    data.studentLastName = document.getElementById("editlname").value;
+    data.studentEmail = document.getElementById("editemail").value;
+    data.studentPhoneNumber = document.getElementById("editphonenumber").value;
+    data.id = document.getElementById("editstudentid").value;
+    
+    req.open("POST", "/update-student", true);
+    req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    req.addEventListener("load", () => {
+        if (req.status >= 200 && req.status < 400) {
+            window.location.reload();
+        } else {
+            console.log("ERROR");
+        }
+    })
+
+    req.send(JSON.stringify(data));
+    document.getElementById("updateStudent").hidden = true;
 }

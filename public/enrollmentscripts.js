@@ -53,7 +53,7 @@ function addEnrollment() {
         if (req.status >= 200 && req.status < 400) {
             window.location.reload();
         } else {
-            alert("Error adding enrollment.");
+            alert("Error adding enrollment.\nPlease check if student is already enrolled in class!");
         }
     })
 req.send(JSON.stringify(data));

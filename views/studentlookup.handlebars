@@ -32,7 +32,7 @@
     
 </div>
 
-<form id="student-add" hidden>
+<form id="student-add" onsubmit="addStudent()" hidden>
     <h3>Add a Student:</h3>
     <p>Add a new student to the database. All fields are required.</p> 
     <div>
@@ -55,7 +55,7 @@
         <label for="sphone">Student Phone Number:</label>
         <input type="tel" id="sphone" name="sphone" placeholder="1112223333" pattern="[0-9]{10}" minlength="10" maxlength="10" required>
     </div>
-  <button onclick="addStudent()">Add New Student</button>
+  <button>Add New Student</button>
 </form>
 
 <br>

@@ -17,14 +17,14 @@
     <input type="submit" value="Search">
 </form>
 
-<form id="room-add" hidden>
+<form id="room-add" onsubmit="addRoom()" hidden>
     <h3>Add a Room:</h3>
     <p>Add a new room in the database.</p>
     <div>
         <label for="roomNumberAdd">Room Number:</label>
         <input type="text" id="roomNumberAdd" name="roomNumberAdd" placeholder="A302" pattern="[A-Z]{1}[0-9]{3}" maxlength="4" required>
     </div>
-    <button onclick="addRoom()">Add New Room</button>
+    <button>Add New Room</button>
 </form>
 
 <br>

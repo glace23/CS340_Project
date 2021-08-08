@@ -45,22 +45,18 @@ function deleteCourse(courseID) {
 }
 
 let addCourseForm = document.getElementById("course-add");
-let addCourseButton = document.getElementById("addCourse");
 let courseNameAdd = document.getElementById("cname");
 let courseStartDateAdd = document.getElementById("cstart");
 let courseEndDateAdd = document.getElementById("cend");
 let courseRoomAdd = document.getElementById("croom");
 let professorIDAdd = document.getElementById("pnumber")
 
-// Listen for adding a new course
-addCourseButton.addEventListener("click", (event) => {
-    event.preventDefault();
-    
+function addCourse() {
     // form validation check
     if (!addCourseForm.checkValidity()) {
         alert("Improper inputs for adding a course. Please follow the format.");
         console.log(addCourseForm.reportValidity());
-        addCourseForm.find(':submit').click();
+        addCourseForm.find().click();
     }
     
     // place courses in dictionary
@@ -83,7 +79,7 @@ addCourseButton.addEventListener("click", (event) => {
         }
     })
 req.send(JSON.stringify(data));
-});
+};
 
 
 function updateCourse(courseID){
@@ -108,6 +104,15 @@ function updateCourse(courseID){
 
 
 function saveUpdateCourse() {
+    let updateCourseForm = document.getElementById("course-update");
+    // form validation check
+    if (!updateCourseForm.checkValidity()) {
+        alert("Improper inputs for updating a course. Please follow the format.");
+        console.log(addCourseForm.reportValidity());
+        updateCourseForm.find(':submit').click();
+    }
+    
+
    var req = new XMLHttpRequest();
    var data = {};
     data.courseName = document.getElementById("editName").value;

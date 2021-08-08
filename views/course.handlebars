@@ -51,13 +51,21 @@
     </div>
     <div>
         <label for="croom">Room Number:</label>
-        <input type="text" id="croom" name="croom" placeholder="A302" pattern="[A-Z]{1}[0-9]{3}" maxlength="4" required>
+        <select id="croom" name="croom" required>
+            {{#each rooms}}
+                <option value="{{roomID}}">{{roomNumber}}</option>
+            {{/each}}
+        </select>
     </div>
     <div>
         <label for="cnumber">Professor ID Number:</label>
-        <input type="text" id="pnumber" name="cnumber" placeholder="12345" pattern="[0-9]{5}" minlength="5" maxlength="5" required>
+        <select id="pnumber" name="cnumber" required>
+            {{#each professors}}
+                <option value="{{professorID}}">{{professorName}}</option>
+            {{/each}}
+        </select>
     </div>
-    <input type="submit" value="Add Course" id="addCourse">
+    <button>Add New Course</button>
 </form>
 
 
@@ -113,25 +121,27 @@
         </thead>
         <tbody>
             <tr>
-                <td><input type="text" id="editName" name="cname" pattern="[A-Za-z]{2}[0-9]{3}" maxlength="5" disabled></input></td>
-                <td><input type="date" id="editStart" name="cstart" required></input></td>
-                <td><input type="date" id="editEnd" name="cend" required></input></td>
-                <td>
-                    <select id="editRoomNumber" name="croom">
-                        {{#each rooms}}
-                            <option value="{{roomID}}">{{roomNumber}}</option>
-                        {{/each}}
-                    </select>
-                </td>
-                <td>
-                    <select id="editProfessorNumber" name="cnumber">
-                        {{#each professors}}
-                            <option value="{{professorID}}">{{professorName}}</option>
-                        {{/each}}
-                    </select>
-                </td>
-                <td hidden><input type="text" id="editcid" disabled></input></td>
-                <td><button onclick="saveUpdateCourse()">Save</button></td>
+                <form id="course-update">
+                    <td><input type="text" id="editName" name="cname" pattern="[A-Za-z]{2}[0-9]{3}" maxlength="5" disabled></input></td>
+                    <td><input type="date" id="editStart" name="cstart" required></input></td>
+                    <td><input type="date" id="editEnd" name="cend" required></input></td>
+                    <td>
+                        <select id="editRoomNumber" name="croom" required>
+                            {{#each rooms}}
+                                <option value="{{roomID}}">{{roomNumber}}</option>
+                            {{/each}}
+                        </select>
+                    </td>
+                    <td>
+                        <select id="editProfessorNumber" name="cnumber" required>
+                            {{#each professors}}
+                                <option value="{{professorID}}">{{professorName}}</option>
+                            {{/each}}
+                        </select>
+                    </td>
+                    <td hidden><input type="text" id="editcid" disabled></input></td>
+                    <td><button onclick="saveUpdateCourse()">Save</button></td>
+                </form>
             </tr>
         </tbody>
     </table>

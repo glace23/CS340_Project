@@ -29,10 +29,9 @@ function deleteEnrollment(enrollmentID){
 }
 
 let studentIDEnroll = document.getElementById("sNumber");
-let courseNameEnroll = document.getElementById("courseName");
+let courseIDEnroll = document.getElementById("courseID");
 let addEnrollmentForm = document.getElementById("enrollment-add");
 
-// Listen for adding a new enrollment
 function addEnrollment() {   
     // form validation check
     if (!addEnrollmentForm.checkValidity()) {
@@ -45,7 +44,7 @@ function addEnrollment() {
     var req = new XMLHttpRequest();
     var data = {};
     data.studentIDEnroll = studentIDEnroll.value;
-    data.courseNameEnroll = courseNameEnroll.value;
+    data.courseIDEnroll = courseIDEnroll.value;
 
     // make  POST request to add
     req.open("POST", "/insert-enrollment", true);

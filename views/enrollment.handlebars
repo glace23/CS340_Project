@@ -7,7 +7,7 @@
     <p>Add a new enrollment to the database. All fields are required.</p> 
     <div>
         <label for="sNumber">Student ID Number:</label>
-        <select id="sNumber" name="student" required>
+        <select id="sNumber" name="sNumber" required>
             {{#each students}}
                 <option value="{{studentID}}">{{studentName}}</option>
             {{/each}}
@@ -15,7 +15,7 @@
     </div>
     <div>
         <label for="courseID">Course Name:</label>
-        <select id="courseID" name="course" required>
+        <select id="courseID" name="courseID" required>
             {{#each courses}}
                 <option value="{{courseID}}">{{courseName}}</option>
             {{/each}}

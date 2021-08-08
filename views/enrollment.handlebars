@@ -14,14 +14,14 @@
         </select>
     </div>
     <div>
-        <label for="courseName">Course Name:</label>
-        <select id="courseName" name="course" required>
+        <label for="courseID">Course Name:</label>
+        <select id="courseID" name="course" required>
             {{#each courses}}
                 <option value="{{courseID}}">{{courseName}}</option>
             {{/each}}
         </select>
     </div>
-  <button>Add Enrollment</button>
+    <button>Add Enrollment</button>
 </form>
 
 <p>Show all courses a student is taking.</p>
@@ -67,7 +67,7 @@
             <th>Student</th>
             <th>Student Number</th>
             <th>Room Number</th>
-            <th><a href="/enrollment"><button>Reset</button></a></th>
+            <th><a href="/enrollment"><button>Clear Search Filter</button></a></th>
         </tr>
         
     </thead>
